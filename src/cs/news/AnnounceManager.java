@@ -55,7 +55,7 @@ public class AnnounceManager {
 			oos.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.out.println("Can't update prefs");
+			System.out.println("Can't update announces.");
 		}
 	}
 }

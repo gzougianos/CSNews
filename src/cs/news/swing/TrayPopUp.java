@@ -92,6 +92,7 @@ public class TrayPopUp extends PopupMenu {
 			}
 		});
 		add(new LinksPopUpMenu());
+		add(new TeachersPopUpMenu());
 		addSeparator();
 		add(adiavasta);
 		addSeparator();

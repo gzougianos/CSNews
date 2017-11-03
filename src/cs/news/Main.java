@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 
 import cs.news.swing.TrayIcon;
 import cs.news.tasks.Timer;
+import cs.news.teachers.TeacherManager;
 import cs.news.util.BatchWriter;
 
 public class Main {
@@ -15,6 +16,7 @@ public class Main {
 	public static void main(String arguments[]) throws IOException {
 		checkOSCompatibility();
 		AnnounceManager.loadAnnounces();
+		TeacherManager.Initialize();
 		TrayIcon.getInstance();
 		showHelloMessage(arguments);
 		new Timer();
