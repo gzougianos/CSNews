@@ -27,8 +27,6 @@ public class ReadAnnouncesTask extends TimerTask {
 				Elements divs = document.getElementsByClass("newPaging");
 				for (Element div : divs) {
 					boolean color = div.select("a").first().select("font").first() != null;
-				//	if (color)
-					//	System.out.println(div.text());
 					String[] dateAndType = div.select("h3").first().text().split(" - ");
 					String date = dateAndType[0];
 					String type = dateAndType[1];

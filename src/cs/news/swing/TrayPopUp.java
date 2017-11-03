@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.io.IOException;
 
 import cs.news.Announce;
 import cs.news.AnnounceManager;
@@ -80,17 +79,6 @@ public class TrayPopUp extends PopupMenu {
 				System.exit(0);
 			}
 		});
-		MenuItem arxikh = new MenuItem("’νοιγμα ’ρχικής (www.cs.uoi.gr)");
-		arxikh.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				try {
-					Runtime.getRuntime().exec(new String[] { "cmd", "/c", ("start chrome www.cs.uoi.gr") });
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		});
 		CheckboxMenuItem windowsStartUp = new CheckboxMenuItem("Αυτόματη εκκίνηση μαζί με τα Windows");
 		windowsStartUp.setState(Main.PREFERENCES.getBoolean("WINDOWSSTARTUP", true));
 		windowsStartUp.addItemListener(new ItemListener() {
@@ -103,7 +91,7 @@ public class TrayPopUp extends PopupMenu {
 					BatchWriter.deleteBatch();
 			}
 		});
-		add(arxikh);
+		add(new LinksPopUpMenu());
 		addSeparator();
 		add(adiavasta);
 		addSeparator();
