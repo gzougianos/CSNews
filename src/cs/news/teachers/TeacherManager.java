@@ -27,7 +27,7 @@ public class TeacherManager {
 		boolean fileExists = new File(PROPERTIES_LOCATION).exists();
 		if (fileExists && !daysPassed)
 			return;//There is no reason to sync yet.
-		System.out.println("yncing teachers");
+		System.out.println("Synchronizing teachers list...");
 		try {
 			teachers.clear();//clear all teachers
 			Document doc = Jsoup.connect("http://cs.uoi.gr/index.php?menu=m4").get();
