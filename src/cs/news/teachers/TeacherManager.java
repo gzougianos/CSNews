@@ -21,7 +21,7 @@ public class TeacherManager {
 	private static final String PROPERTIES_LOCATION = System.getenv("APPDATA") + "\\CsNewsTeacherData.tmp";
 	public static ArrayList<Teacher> teachers = new ArrayList<>();
 
-	public static void SyncTeachers() {
+	public static void refreshTeachersData() {
 		long lastTimeRead = Main.PREFERENCES.getLong("TEACHERSREADTIME", 0);
 		boolean daysPassed = TimeUnit.DAYS.toMillis(REFRESH_DAYS) + lastTimeRead < System.currentTimeMillis();
 		boolean fileExists = new File(PROPERTIES_LOCATION).exists();
@@ -29,21 +29,22 @@ public class TeacherManager {
 			return;//There is no reason to sync yet.
 		System.out.println("Synchronizing teachers list...");
 		try {
-			teachers.clear();//clear all teachers
 			Document doc = Jsoup.connect("http://cs.uoi.gr/index.php?menu=m4").get();
+			teachers.clear();//clear all teachers
 			Element content = doc.getElementsByClass("content").get(0);
 			Elements teacherElements = content.getElementsByClass("name");
 			for (Element teacherElement : teacherElements) {
 				String teacherName = teacherElement.select("a").text().toString();
-				String tempLink = "http://cs.uoi.gr/" + teacherElement.select("a").attr("href");
-				String teachersLink = getLinkFromHome(tempLink);
-				String email = getEmailFromHome(tempLink);
-				email = email.trim();
-				Teacher teacher = new Teacher(teacherName, teachersLink, email);
+				String teachersLinkCS = "http://cs.uoi.gr/" + teacherElement.select("a").attr("href");
+				String[] linkAndEmail = getTeachersLinkAndEmail(teachersLinkCS);
+				String teacherLink = linkAndEmail[0];
+				String teacherEmail = linkAndEmail[1];
+				teacherEmail = teacherEmail.trim();
+				Teacher teacher = new Teacher(teacherName, teacherLink, teacherEmail);
 				teachers.add(teacher);
 			}
 			Main.PREFERENCES.putLong("TEACHERSREADTIME", System.currentTimeMillis()); //save the time
-			saveTeachers();
+			saveTeachersData();
 		} catch (Exception e) {
 			e.printStackTrace();
 			//	return;
@@ -51,35 +52,28 @@ public class TeacherManager {
 
 	}
 
-	private static String getEmailFromHome(String homeLink) throws IOException {
-		Document doc = Jsoup.connect(homeLink).get();
+	private static final String[] getTeachersLinkAndEmail(String teachersLink) throws IOException {
+		String[] linkAndMail = new String[2];
+		Document doc = Jsoup.connect(teachersLink).get();
 		Elements dataTexts = doc.getElementsByClass("dataText");
 		for (Element element : dataTexts) {
-			if (element.text().contains("(at)")) {
-				return element.text().replaceAll(" \\(at\\) ", "@");
+			if (element.select("a") != null && !element.select("a").toString().equals("")) {//Link
+				linkAndMail[0] = element.select("a").attr("href").toString();
+			}
+			if (element.text().contains("(at)")) { //Email
+				linkAndMail[1] = element.text().replaceAll(" \\(at\\) ", "@");
 			}
 		}
-		return null;
-	}
-
-	private static String getLinkFromHome(String homeLink) throws IOException {
-		Document doc = Jsoup.connect(homeLink).get();
-		Elements dataTexts = doc.getElementsByClass("dataText");
-		for (Element element : dataTexts) {
-			if (element.select("a") != null && !element.select("a").toString().equals("")) {
-				return element.select("a").attr("href").toString();
-			}
-		}
-		return null;
+		return linkAndMail;
 	}
 
 	public static void Initialize() {
-		loadTeachers();
-		SyncTeachers();
+		loadTeachersData();
+		refreshTeachersData();
 	}
 
 	@SuppressWarnings("unchecked")
-	private static void loadTeachers() {
+	private static void loadTeachersData() {
 		try {
 			File f = new File(PROPERTIES_LOCATION);
 			if (!f.exists()) {
@@ -98,7 +92,7 @@ public class TeacherManager {
 
 	}
 
-	private static void saveTeachers() {
+	private static void saveTeachersData() {
 		try {
 			FileOutputStream fos = new FileOutputStream(PROPERTIES_LOCATION);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
