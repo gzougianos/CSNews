@@ -9,11 +9,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-import cs.news.Main;
 import cs.news.announce.Announce;
 import cs.news.announce.AnnounceManager;
 import cs.news.util.BatchWriter;
 import cs.news.util.OpenLinkActionListener;
+import cs.news.util.Options;
 
 public class TrayPopUp extends PopupMenu {
 	private static final long serialVersionUID = -1233037255379467666L;
@@ -60,11 +60,11 @@ public class TrayPopUp extends PopupMenu {
 			}
 		});
 		CheckboxMenuItem windowsStartUp = new CheckboxMenuItem("Αυτόματη εκκίνηση μαζί με τα Windows");
-		windowsStartUp.setState(Main.PREFERENCES.getBoolean("WINDOWSSTARTUP", true));
+		windowsStartUp.setState(Options.WINDOWS_STARTUP.toBoolean());
 		windowsStartUp.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				Main.PREFERENCES.putBoolean("WINDOWSSTARTUP", windowsStartUp.getState());
+				Options.WINDOWS_STARTUP.update(windowsStartUp.getState());
 				if (windowsStartUp.getState())//true, add the registry
 					BatchWriter.writeBatch();
 				else

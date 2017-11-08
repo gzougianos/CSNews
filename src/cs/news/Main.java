@@ -1,7 +1,6 @@
 package cs.news;
 
 import java.io.IOException;
-import java.util.prefs.Preferences;
 
 import javax.swing.JOptionPane;
 
@@ -9,9 +8,9 @@ import cs.news.announce.AnnounceManager;
 import cs.news.swing.TrayIcon;
 import cs.news.teachers.TeacherManager;
 import cs.news.util.BatchWriter;
+import cs.news.util.Options;
 
 public class Main {
-	public static final Preferences PREFERENCES = Preferences.userNodeForPackage(Main.class);
 
 	public static void main(String arguments[]) throws IOException {
 		checkOSCompatibility();
@@ -20,7 +19,7 @@ public class Main {
 		TrayIcon.getInstance();
 		showHelloMessage(arguments);
 		new Timer();
-		if (PREFERENCES.getBoolean("WINDOWSSTARTUP", true))
+		if (Options.WINDOWS_STARTUP.toBoolean())
 			BatchWriter.writeBatch();
 	}
 

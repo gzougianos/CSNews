@@ -14,7 +14,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import cs.news.Main;
+import cs.news.util.Options;
 
 public class TeacherManager {
 	private static final int REFRESH_DAYS = 60; //Every how many days refresh teachers list.
@@ -22,7 +22,7 @@ public class TeacherManager {
 	public static ArrayList<Teacher> teachers = new ArrayList<>();
 
 	public static void refreshTeachersData() {
-		long lastTimeRead = Main.PREFERENCES.getLong("TEACHERSREADTIME", 0);
+		long lastTimeRead = Options.LAST_TIME_TEACHERS_SYNC.toLong();
 		boolean daysPassed = TimeUnit.DAYS.toMillis(REFRESH_DAYS) + lastTimeRead < System.currentTimeMillis();
 		boolean fileExists = new File(PROPERTIES_LOCATION).exists();
 		if (fileExists && !daysPassed)
@@ -43,7 +43,7 @@ public class TeacherManager {
 				Teacher teacher = new Teacher(teacherName, teacherLink, teacherEmail);
 				teachers.add(teacher);
 			}
-			Main.PREFERENCES.putLong("TEACHERSREADTIME", System.currentTimeMillis()); //save the time
+			Options.LAST_TIME_TEACHERS_SYNC.update(System.currentTimeMillis());
 			saveTeachersData();
 		} catch (Exception e) {
 			e.printStackTrace();

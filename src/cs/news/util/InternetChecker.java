@@ -8,7 +8,7 @@ public class InternetChecker {
 		try {
 			final URL url = new URL("http://google.com");
 			final URLConnection con = url.openConnection();
-			con.setConnectTimeout(2500);
+			con.setConnectTimeout(4500);
 			con.connect();
 			return true;
 		} catch (Exception e) {
