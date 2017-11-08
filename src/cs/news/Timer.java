@@ -1,4 +1,4 @@
-package cs.news.tasks;
+package cs.news;
 
 public class Timer extends java.util.Timer {
 	private static final long ANNOUNCES_READ_TASK_INITIAL = 1; //1 Second

@@ -1,4 +1,4 @@
-package cs.news;
+package cs.news.announce;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -1,4 +1,4 @@
-package cs.news.tasks;
+package cs.news;
 
 import java.io.IOException;
 import java.util.TimerTask;
@@ -8,8 +8,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import cs.news.Announce;
-import cs.news.AnnounceManager;
+import cs.news.announce.Announce;
+import cs.news.announce.AnnounceManager;
 import cs.news.swing.TrayIcon;
 
 public class ReadAnnouncesTask extends TimerTask {

@@ -9,9 +9,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-import cs.news.Announce;
-import cs.news.AnnounceManager;
 import cs.news.Main;
+import cs.news.announce.Announce;
+import cs.news.announce.AnnounceManager;
 import cs.news.util.BatchWriter;
 import cs.news.util.OpenLinkActionListener;
 

@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-import cs.news.Announce;
+import cs.news.announce.Announce;
 
 public class OpenLinkActionListener implements ActionListener {
 	private static final String ANNOUNCEMENTS_URL = "\"http://cs.uoi.gr/index.php?menu=m58&id=";

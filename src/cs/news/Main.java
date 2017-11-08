@@ -5,8 +5,8 @@ import java.util.prefs.Preferences;
 
 import javax.swing.JOptionPane;
 
+import cs.news.announce.AnnounceManager;
 import cs.news.swing.TrayIcon;
-import cs.news.tasks.Timer;
 import cs.news.teachers.TeacherManager;
 import cs.news.util.BatchWriter;
 

@@ -1,10 +1,10 @@
-package cs.news.tasks;
+package cs.news;
 
 import static cs.news.util.InternetChecker.AvailableInternetConnection;
 
 import java.util.TimerTask;
 
-import cs.news.AnnounceManager;
+import cs.news.announce.AnnounceManager;
 import cs.news.swing.TrayIcon;
 
 public class RemindTask extends TimerTask {

@@ -12,7 +12,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import cs.news.AnnounceManager;
+import cs.news.announce.AnnounceManager;
 
 public class TrayIcon extends java.awt.TrayIcon {
 	private static final String TRAY_NAME = "CSE News";
