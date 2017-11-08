@@ -39,7 +39,11 @@ public class ReadAnnouncesTask extends TimerTask {
 						break;
 					if (!AnnounceManager.announceAlreadyExists(a)) {
 						extracts++;
-						AnnounceManager.announces.add(a);
+						int size = AnnounceManager.announces.size();
+						if (size >= AnnounceManager.MAX_ANNOUNCEMENTS)
+							AnnounceManager.announces.add(0, a); // To the top of the stack
+						else
+							AnnounceManager.announces.add(a);
 					}
 				}
 				pageNumber++;//next Page
