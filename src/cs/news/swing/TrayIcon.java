@@ -30,8 +30,8 @@ public class TrayIcon extends java.awt.TrayIcon {
 			setToolTip("Δεν υπάρχει σύνδεση στο Internet.");
 			setImage(createImage("--"));
 		} else {
-			int unread = AnnounceManager.getUnreadAnnounces();
-			setToolTip(TRAY_NAME + "\n" + AnnounceManager.getUnreadAnnounces() + " Νέες Ανακοινώσεις");
+			int unread = AnnounceManager.getNumOfUnreadAnnounces();
+			setToolTip(TRAY_NAME + "\n" + +unread + (unread == 1 ? " Νέα Ανακοίνωση" : " Νέες Ανακοινώσεις"));
 			setImage(createImage(unread == 0 ? "" : String.valueOf(unread)));
 		}
 	}

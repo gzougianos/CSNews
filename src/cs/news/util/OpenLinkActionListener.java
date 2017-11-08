@@ -4,11 +4,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+import cs.news.Announce;
+
 public class OpenLinkActionListener implements ActionListener {
+	private static final String ANNOUNCEMENTS_URL = "\"http://cs.uoi.gr/index.php?menu=m58&id=";
 	private String link;
 
 	public OpenLinkActionListener(String link) {
 		this.link = link;
+	}
+
+	public OpenLinkActionListener(Announce announce) {
+		this.link = ANNOUNCEMENTS_URL + announce.getId();
 	}
 
 	@Override

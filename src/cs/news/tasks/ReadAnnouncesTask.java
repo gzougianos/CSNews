@@ -1,7 +1,6 @@
 package cs.news.tasks;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.TimerTask;
 
 import org.jsoup.Jsoup;
@@ -36,8 +35,10 @@ public class ReadAnnouncesTask extends TimerTask {
 					announcesRead++;
 					if (announcesRead > AnnounceManager.MAX_ANNOUNCEMENTS)
 						break;
-					if (extractAnnounce(a))
+					if (!AnnounceManager.announceAlreadyExists(a)) {
 						extracts++;
+						AnnounceManager.announces.add(a);
+					}
 				}
 				pageNumber++;//next Page
 			} catch (IOException e) {
@@ -45,6 +46,8 @@ public class ReadAnnouncesTask extends TimerTask {
 				return;
 			}
 		}
+		AnnounceManager.removeReadAnnounces();
+		AnnounceManager.saveAnnounces();
 		if (extracts > 0) {
 			TrayIcon.getInstance().showMessage("CS News",
 					extracts + (extracts == 1 ? " νέα ανακοίνωση!" : " νέες ανακοινώσεις!"), true);
@@ -52,12 +55,4 @@ public class ReadAnnouncesTask extends TimerTask {
 		TrayIcon.getInstance().reBuild();
 	}
 
-	private boolean extractAnnounce(Announce a) {
-		if (AnnounceManager.announces.containsKey(a.getId()))
-			return false;
-		if (AnnounceManager.announces.size() == AnnounceManager.MAX_ANNOUNCEMENTS)
-			AnnounceManager.announces.remove(Collections.min(AnnounceManager.announces.keySet())); //remove last announce
-		AnnounceManager.announces.put(a.getId(), a);
-		return true;
-	}
 }

@@ -13,6 +13,7 @@ import cs.news.Announce;
 import cs.news.AnnounceManager;
 import cs.news.Main;
 import cs.news.util.BatchWriter;
+import cs.news.util.OpenLinkActionListener;
 
 public class TrayPopUp extends PopupMenu {
 	private static final long serialVersionUID = -1233037255379467666L;
@@ -20,17 +21,14 @@ public class TrayPopUp extends PopupMenu {
 
 	public TrayPopUp() {
 		super();
-		SeperatedPopUpMenu genika = new SeperatedPopUpMenu("Γενικά");
-		SeperatedPopUpMenu foititwn = new SeperatedPopUpMenu("Φοιτητών");
-		SeperatedPopUpMenu omilies = new SeperatedPopUpMenu("Ομιλίες/Σεμινάρια");
-		SeperatedPopUpMenu prokiriksis = new SeperatedPopUpMenu("Προκυρήξεις");
-		SeperatedPopUpMenu adiavasta = new SeperatedPopUpMenu("Νέες Ανακοινώσεις");
-		for (Announce a : AnnounceManager.announces.getSortedAnnounces()) {
+		PopupMenu news = new PopupMenu("Τελευταίες Ανακοινώσεις");
+		news.addSeparator();
+		for (Announce a : AnnounceManager.announces) {
 			MenuItem m = new MenuItem(adjustTitleLength(a));
+			m.addActionListener(new OpenLinkActionListener(a));
 			m.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					AnnounceManager.openAnnouncement(a);
 					if (!a.isRead())
 						a.setRead(true);
 					TrayIcon.getInstance().reBuild();
@@ -38,32 +36,14 @@ public class TrayPopUp extends PopupMenu {
 			});
 			if (a.isColorized())
 				m.setFont(new Font(null, Font.BOLD, 12));
-			if (!a.isRead()) {
-				adiavasta.addItem(m);
-				continue;
-			}
-			if (a.getType().contains("Γενικά")) {
-				genika.addItem(m);
-			} else if (a.getType().contains("Φοιτητών")) {
-				foititwn.addItem(m);
-			} else if (a.getType().contains("Προκυρήξεις")) {
-				prokiriksis.addItem(m);
-			} else {
-				omilies.addItem(m);
-			}
+			news.add(m);
+			news.addSeparator();
 		}
-		//If there is nothing new, add an item to inform user.
-		if (adiavasta.getItemCount() <= 1) { //Only the first seperator
-			adiavasta.removeAll();
-			MenuItem nothing = new MenuItem("Καμία νέα ανακοίνωση");
-			nothing.setEnabled(false);
-			adiavasta.add(nothing);
-		}
-		MenuItem markarisma = new MenuItem("Μαρκάρισμα όλων ως Αναγνωσμένα");
+		MenuItem markarisma = new MenuItem("Μαρκάρισμα Ανακοινώσεων ως Αναγνωσμένες");
 		markarisma.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				for (Announce a : AnnounceManager.announces.values()) {
+				for (Announce a : AnnounceManager.announces) {
 					a.setRead(true);
 				}
 				AnnounceManager.saveAnnounces();
@@ -94,20 +74,15 @@ public class TrayPopUp extends PopupMenu {
 		add(new LinksPopUpMenu());
 		add(new TeachersPopUpMenu());
 		addSeparator();
-		add(adiavasta);
-		addSeparator();
-		add(genika);
-		add(foititwn);
-		add(omilies);
-		add(prokiriksis);
+		add(news);
+		add(markarisma);
 		addSeparator();
 		add(windowsStartUp);
-		add(markarisma);
 		add(eksodos);
 	}
 
 	private static String adjustTitleLength(Announce a) {
-		String title = a.getDate();
+		String title = a.isRead() ? a.getDate() : "* Νέα * " + a.getDate();
 		title += " - " + a.getTitle();
 		if (title.length() > MAX_CHARACTERS_IN_MENU_ITEMS) {
 			title = title.substring(0, Math.min(title.length(), MAX_CHARACTERS_IN_MENU_ITEMS));

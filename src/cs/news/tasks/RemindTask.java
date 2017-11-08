@@ -1,7 +1,8 @@
 package cs.news.tasks;
 
-import java.util.TimerTask;
 import static cs.news.util.InternetChecker.AvailableInternetConnection;
+
+import java.util.TimerTask;
 
 import cs.news.AnnounceManager;
 import cs.news.swing.TrayIcon;
@@ -10,7 +11,7 @@ public class RemindTask extends TimerTask {
 
 	@Override
 	public void run() {
-		int unreadAnnounces = AnnounceManager.getUnreadAnnounces();
+		int unreadAnnounces = AnnounceManager.getNumOfUnreadAnnounces();
 		if (!AvailableInternetConnection()) {
 			TrayIcon.getInstance().reBuild();
 			return; // If no connection, don't remind anything.
