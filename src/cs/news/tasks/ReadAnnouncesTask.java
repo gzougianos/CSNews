@@ -13,6 +13,7 @@ import cs.news.AnnounceManager;
 import cs.news.swing.TrayIcon;
 
 public class ReadAnnouncesTask extends TimerTask {
+	private static final String NEWS_HOMEPAGE = "http://cs.uoi.gr/index.php?menu=m5&page=";
 
 	@Override
 	public void run() {
@@ -22,16 +23,17 @@ public class ReadAnnouncesTask extends TimerTask {
 		while (announcesRead < AnnounceManager.MAX_ANNOUNCEMENTS) {
 			Document document;
 			try {
-				document = Jsoup.connect("http://cs.uoi.gr/index.php?menu=m5&page=" + pageNumber).get();
+				final String currentPageLink = NEWS_HOMEPAGE + pageNumber;
+				document = Jsoup.connect(currentPageLink).get();
 				Elements divs = document.getElementsByClass("newPaging");
 				for (Element div : divs) {
-					boolean color = div.select("a").first().select("font").first() != null;
-					String[] dateAndType = div.select("h3").first().text().split(" - ");
-					String date = dateAndType[0];
-					String type = dateAndType[1];
-					String title = div.select("a").first().text();
-					int id = Integer.parseInt(div.select("a").first().attr("href").split("id=")[1]);
-					Announce a = new Announce(date, type, title, id, false, color);
+					Element hyperLink = div.select("a").first();
+					boolean color = hyperLink.select("font").first() != null;
+					String date = div.select("h3").first().text().split(" - ")[0];
+					String title = hyperLink.text();
+					int id = Integer.parseInt(hyperLink.attr("href").split("id=")[1]);
+					String pdf = getPDFlink("http://cs.uoi.gr/index.php?menu=m58&id=" + id);
+					Announce a = new Announce(date, title, id, false, color, pdf);
 					announcesRead++;
 					if (announcesRead > AnnounceManager.MAX_ANNOUNCEMENTS)
 						break;
@@ -55,4 +57,10 @@ public class ReadAnnouncesTask extends TimerTask {
 		TrayIcon.getInstance().reBuild();
 	}
 
+	private String getPDFlink(String announceLink) throws IOException {
+		Document doc = Jsoup.connect(announceLink).get();
+		Element attached = doc.getElementsByClass("newsMoreAttached").first();
+		String href = attached.select("a").attr("href");
+		return "cs.uoi.gr" + href;
+	}
 }
