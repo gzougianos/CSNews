@@ -17,12 +17,13 @@ import cs.news.util.Options;
 public class SettingsPanel extends JPanel {
 	private static final long serialVersionUID = 6429776879534491034L;
 	private static final Object[] DIALOG_OPTIONS = { "Αποθήκευση", "Ακύρωση" };
-	private static final Dimension PANEL_DIMENSION = new Dimension(265, 185);
+	private static final Dimension PANEL_DIMENSION = new Dimension(265, 205);
 	private JSpinner announceSpinner = new JSpinner();
 	private JCheckBox openInPdfCheckBox = new JCheckBox();
 	private JSpinner syncSpinner = new JSpinner();
 	private JSpinner remindSpinner = new JSpinner();
 	private JCheckBox windowsStartupCheckBox;
+	private JSpinner maxCharactersSpinner = new JSpinner();
 
 	public SettingsPanel() {
 		super();
@@ -55,23 +56,24 @@ public class SettingsPanel extends JPanel {
 				+ "<br>Προτεινόμενη Τιμή: 10</html>");
 		add(announceSpinner);
 
-		openInPdfCheckBox.setBounds(2, 48, 141, 20);
+		openInPdfCheckBox.setBounds(2, 45, 141, 20);
 		openInPdfCheckBox.setSelected(Options.OPEN_ANNOUNCEMENTS_IN_PDF.toBoolean());
 		openInPdfCheckBox.setText("’νοιγμα σε μορφή PDF.");
 		openInPdfCheckBox.setToolTipText("<html>Στην ιστοσελίδα συνήθως αναγράφεται ένα κομμάτι της ανακοίνωσης."
 				+ "<br>Προτιμήστε αυτήν την επιλογή για προβολή της ολοκληρωμένης ανακοίνωσης.</html>");
 		add(openInPdfCheckBox);
+
 		JTextField announcementSyncTxt = new JTextField("Περίοδος Συγχρονισμού:");
 		announcementSyncTxt.setToolTipText(
 				"<html>Κάθε πόσα λεπτά θα γίνεται έλεγχος για νέες ανακοινώσεις.<br>Προτεινόμενη τιμή: 30 λεπτά</html>");
 		announcementSyncTxt.setHorizontalAlignment(SwingConstants.LEFT);
 		announcementSyncTxt.setEditable(false);
-		announcementSyncTxt.setBounds(6, 70, 201, 20);
+		announcementSyncTxt.setBounds(6, 66, 201, 20);
 		announcementSyncTxt.setColumns(10);
 		announcementSyncTxt.setBorder(BorderFactory.createEmptyBorder());
 		add(announcementSyncTxt);
 
-		syncSpinner.setBounds(217, 70, 41, 20);
+		syncSpinner.setBounds(217, 66, 41, 20);
 		syncSpinner.setValue(Options.SYNC_ANNOUNCES_TIME.toInt());
 		syncSpinner.setToolTipText(announcementSyncTxt.getToolTipText());//same tool tip as announcementSyncTxt
 		add(syncSpinner);
@@ -80,29 +82,45 @@ public class SettingsPanel extends JPanel {
 		announcementRemindTxt.setToolTipText(
 				"<html>Κάθε πόσα λεπτά θα γίνεται υπενθύμιση σε περίπτωση νέων ανακοινώσεων.<br>Χρησιμοποιήστε την τιμή 0 για απενεργοποίηση υπενθυμήσεων.<br>Προτεινόμενη τιμή 120 λεπτά (2 ώρες).");
 		announcementRemindTxt.setEditable(false);
-		announcementRemindTxt.setBounds(6, 91, 201, 20);
+		announcementRemindTxt.setBounds(6, 87, 201, 20);
 		announcementRemindTxt.setColumns(10);
 		announcementRemindTxt.setBorder(BorderFactory.createEmptyBorder());
 		add(announcementRemindTxt);
 
-		remindSpinner.setBounds(217, 91, 41, 20);
+		remindSpinner.setBounds(217, 87, 41, 20);
 		remindSpinner.setValue(Options.REMIND_ANNOUNCES_TIME.toInt());
 		remindSpinner.setToolTipText(announcementRemindTxt.getToolTipText());//same tool tip as announcementRemindTxt
 		add(remindSpinner);
 
+		JTextField maxCharsInAnnounceTxT;
+		maxCharsInAnnounceTxT = new JTextField("Μέγιστος αριθμός χαρακτήρων εμφάνισης:");
+		maxCharsInAnnounceTxT.setEditable(false);
+		maxCharsInAnnounceTxT.setBorder(BorderFactory.createEmptyBorder());
+		maxCharsInAnnounceTxT.setToolTipText(
+				"<html>Αριθμός χαρακτήρων που θα εμφανίζονται στην επικεφαλίδα μιας ανακοίνωσης.<br>Προτεινόμενη τιμή: 70</html>");
+		maxCharsInAnnounceTxT.setHorizontalAlignment(SwingConstants.LEFT);
+		maxCharsInAnnounceTxT.setBounds(6, 108, 211, 20);
+		add(maxCharsInAnnounceTxT);
+		maxCharsInAnnounceTxT.setColumns(10);
+
+		maxCharactersSpinner.setBounds(217, 108, 41, 20);
+		maxCharactersSpinner.setValue(Options.MAX_CHARACTERS_ANNOUNCE_MENU_ITEM.toInt());
+		maxCharactersSpinner.setToolTipText(maxCharsInAnnounceTxT.getToolTipText());//same tool tip as maxCharsInAnnounceTxT
+		add(maxCharactersSpinner);
+
+		//General Settings
 		JTextField generalSettingsHeader = new JTextField("Γενικές Ρυθμίσεις");
 		generalSettingsHeader.setHorizontalAlignment(SwingConstants.CENTER);
 		generalSettingsHeader.setEditable(false);
-		generalSettingsHeader.setBounds(63, 122, 132, 20);
+		generalSettingsHeader.setBounds(63, 146, 132, 20);
 		generalSettingsHeader.setBorder(BorderFactory.createEmptyBorder());
 		generalSettingsHeader.setColumns(10);
 		add(generalSettingsHeader);
 
 		windowsStartupCheckBox = new JCheckBox("Αυτόματη εκκίνηση με τα Windows.");
 		windowsStartupCheckBox.setSelected(Options.WINDOWS_STARTUP.toBoolean());
-		windowsStartupCheckBox.setBounds(6, 142, 201, 23);
+		windowsStartupCheckBox.setBounds(6, 164, 201, 23);
 		add(windowsStartupCheckBox);
-
 	}
 
 	public static void open() {
@@ -116,6 +134,7 @@ public class SettingsPanel extends JPanel {
 			Options.SYNC_ANNOUNCES_TIME.update(panel.getOptionSyncAnnouncesTime());
 			Options.REMIND_ANNOUNCES_TIME.update(panel.getOptionRemindAnnouncesTime());
 			Options.WINDOWS_STARTUP.update(panel.getOptionWindowsStartUp());
+			Options.MAX_CHARACTERS_ANNOUNCE_MENU_ITEM.update(panel.getOptionMaxCharsInAnnouncements());
 			Timer.restart();
 			BatchWriter.handleState();
 		}
@@ -139,5 +158,9 @@ public class SettingsPanel extends JPanel {
 
 	private boolean getOptionWindowsStartUp() {
 		return windowsStartupCheckBox.isSelected();
+	}
+
+	private int getOptionMaxCharsInAnnouncements() {
+		return (int) maxCharactersSpinner.getValue();
 	}
 }

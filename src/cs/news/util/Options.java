@@ -4,6 +4,7 @@ import java.util.prefs.Preferences;
 
 public enum Options {
 	//@formatter:off
+	MAX_CHARACTERS_ANNOUNCE_MENU_ITEM(70),
 	REMIND_ANNOUNCES_TIME(120),
 	SYNC_ANNOUNCES_TIME(30),
 	OPEN_ANNOUNCEMENTS_IN_PDF(false),
