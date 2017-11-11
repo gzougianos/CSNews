@@ -1,19 +1,14 @@
 package cs.news.swing;
 
-import java.awt.CheckboxMenuItem;
 import java.awt.Font;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 
 import cs.news.announce.Announce;
 import cs.news.announce.AnnounceManager;
-import cs.news.util.BatchWriter;
 import cs.news.util.OpenLinkActionListener;
-import cs.news.util.Options;
 
 public class TrayPopUp extends PopupMenu {
 	private static final long serialVersionUID = -1233037255379467666L;
@@ -46,6 +41,7 @@ public class TrayPopUp extends PopupMenu {
 				for (Announce a : AnnounceManager.announces) {
 					a.setRead(true);
 				}
+				AnnounceManager.removeReadAnnounces();
 				AnnounceManager.saveAnnounces();
 				TrayIcon.getInstance().reBuild();
 			}
@@ -59,16 +55,13 @@ public class TrayPopUp extends PopupMenu {
 				System.exit(0);
 			}
 		});
-		CheckboxMenuItem windowsStartUp = new CheckboxMenuItem("Αυτόματη εκκίνηση μαζί με τα Windows");
-		windowsStartUp.setState(Options.WINDOWS_STARTUP.toBoolean());
-		windowsStartUp.addItemListener(new ItemListener() {
+		MenuItem epiloges = new MenuItem("Ρυθμίσεις");
+		epiloges.addActionListener(new ActionListener() {
+
 			@Override
-			public void itemStateChanged(ItemEvent e) {
-				Options.WINDOWS_STARTUP.update(windowsStartUp.getState());
-				if (windowsStartUp.getState())//true, add the registry
-					BatchWriter.writeBatch();
-				else
-					BatchWriter.deleteBatch();
+			public void actionPerformed(ActionEvent e) {
+				SettingsPanel.open();
+
 			}
 		});
 		add(new LinksPopUpMenu());
@@ -77,7 +70,7 @@ public class TrayPopUp extends PopupMenu {
 		add(news);
 		add(markarisma);
 		addSeparator();
-		add(windowsStartUp);
+		add(epiloges);
 		add(eksodos);
 	}
 

@@ -11,7 +11,7 @@ public class BatchWriter {
 	private static final String BATCH_NAME = "runcs.bat";
 	private static final String BATCH_COMMAND = "\"JAR_LOCATION\" /sil";
 
-	public static void writeBatch() {
+	private static void writeBatch() {
 		final File file = new File(BATCH_LOCATION + BATCH_NAME);
 		try {
 			file.createNewFile();
@@ -29,8 +29,16 @@ public class BatchWriter {
 		}
 	}
 
-	public static void deleteBatch() {
+	private static void deleteBatch() {
 		final File file = new File(BATCH_LOCATION + BATCH_NAME);
 		file.delete();
+	}
+
+	public static void handleState() {
+		boolean enable = Options.WINDOWS_STARTUP.toBoolean();
+		if (enable)
+			writeBatch();
+		else
+			deleteBatch();
 	}
 }

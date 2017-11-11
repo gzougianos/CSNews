@@ -11,20 +11,21 @@ import org.jsoup.select.Elements;
 import cs.news.announce.Announce;
 import cs.news.announce.AnnounceManager;
 import cs.news.swing.TrayIcon;
+import cs.news.util.Options;
 
 public class ReadAnnouncesTask extends TimerTask {
 	private static final String NEWS_HOMEPAGE = "http://cs.uoi.gr/index.php?menu=m5&page=";
 
 	@Override
 	public void run() {
+		TrayIcon.getInstance().showSyncImage();
 		int pageNumber = 1;
 		int extracts = 0;
 		int announcesRead = 0;
-		while (announcesRead < AnnounceManager.MAX_ANNOUNCEMENTS) {
-			Document document;
-			try {
+		try {
+			while (announcesRead < Options.ANNOUNCES_MAX_NUMBER.toInt()) {
 				final String currentPageLink = NEWS_HOMEPAGE + pageNumber;
-				document = Jsoup.connect(currentPageLink).get();
+				Document document = Jsoup.connect(currentPageLink).get();
 				Elements divs = document.getElementsByClass("newPaging");
 				for (Element div : divs) {
 					Element hyperLink = div.select("a").first();
@@ -35,30 +36,32 @@ public class ReadAnnouncesTask extends TimerTask {
 					String pdf = getPDFlink("http://cs.uoi.gr/index.php?menu=m58&id=" + id);
 					Announce a = new Announce(date, title, id, false, color, pdf);
 					announcesRead++;
-					if (announcesRead > AnnounceManager.MAX_ANNOUNCEMENTS)
+					if (announcesRead > Options.ANNOUNCES_MAX_NUMBER.toInt())
 						break;
 					if (!AnnounceManager.announceAlreadyExists(a)) {
 						extracts++;
 						int size = AnnounceManager.announces.size();
-						if (size >= AnnounceManager.MAX_ANNOUNCEMENTS)
+						if (size >= Options.ANNOUNCES_MAX_NUMBER.toInt())
 							AnnounceManager.announces.add(0, a); // To the top of the stack
 						else
 							AnnounceManager.announces.add(a);
 					}
 				}
 				pageNumber++;//next Page
-			} catch (IOException e) {
-				e.printStackTrace();
-				return;
+
 			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			AnnounceManager.removeReadAnnounces();
+			AnnounceManager.saveAnnounces();
+			if (extracts > 0) {
+				TrayIcon.getInstance().showMessage("CS News",
+						extracts + (extracts == 1 ? " νέα ανακοίνωση!" : " νέες ανακοινώσεις!"), true);
+			}
+			TrayIcon.getInstance().reBuild();
 		}
-		AnnounceManager.removeReadAnnounces();
-		AnnounceManager.saveAnnounces();
-		if (extracts > 0) {
-			TrayIcon.getInstance().showMessage("CS News",
-					extracts + (extracts == 1 ? " νέα ανακοίνωση!" : " νέες ανακοινώσεις!"), true);
-		}
-		TrayIcon.getInstance().reBuild();
+
 	}
 
 	private String getPDFlink(String announceLink) throws IOException {

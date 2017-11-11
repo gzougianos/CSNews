@@ -20,12 +20,13 @@ public class TrayIcon extends java.awt.TrayIcon {
 	public TrayIcon() {
 		super(createImage(""));
 		setImageAutoSize(true);
-		reBuild();
 		addToSystem();
+		reBuild();
 	}
 
 	public void reBuild() {
 		setPopupMenu(new TrayPopUp());
+		showSyncImage();
 		if (!AvailableInternetConnection()) {
 			setToolTip("Δεν υπάρχει σύνδεση στο Internet.");
 			setImage(createImage("--"));
@@ -34,6 +35,11 @@ public class TrayIcon extends java.awt.TrayIcon {
 			setToolTip(TRAY_NAME + "\n" + +unread + (unread == 1 ? " Νέα Ανακοίνωση" : " Νέες Ανακοινώσεις"));
 			setImage(createImage(unread == 0 ? "" : String.valueOf(unread)));
 		}
+	}
+
+	public void showSyncImage() {
+		setImage(createImage("*"));
+		setToolTip("Συγχρονισμός Ανακοινώσεων...");
 	}
 
 	private static Image createImage(String writtenText) {

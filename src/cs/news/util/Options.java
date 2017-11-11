@@ -4,6 +4,10 @@ import java.util.prefs.Preferences;
 
 public enum Options {
 	//@formatter:off
+	REMIND_ANNOUNCES_TIME(120),
+	SYNC_ANNOUNCES_TIME(30),
+	OPEN_ANNOUNCEMENTS_IN_PDF(false),
+	ANNOUNCES_MAX_NUMBER(10),
 	INDEX_OF_LAST_TEACHER_VISITED(-1),
 	LAST_TIME_TEACHERS_SYNC(0), //The time of the last synchronize teachers
 	WINDOWS_STARTUP(false); //Run app with windows

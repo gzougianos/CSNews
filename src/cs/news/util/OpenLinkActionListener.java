@@ -15,7 +15,8 @@ public class OpenLinkActionListener implements ActionListener {
 	}
 
 	public OpenLinkActionListener(Announce announce) {
-		this.link = ANNOUNCEMENTS_URL + announce.getId();
+		this.link = Options.OPEN_ANNOUNCEMENTS_IN_PDF.toBoolean() ? announce.getPDFLink()
+				: ANNOUNCEMENTS_URL + announce.getId();
 	}
 
 	@Override

@@ -10,9 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+import cs.news.util.Options;
+
 public class AnnounceManager {
 	public static Stack<Announce> announces = new Stack<>();
-	public static final int MAX_ANNOUNCEMENTS = 10;
 	private static final String PROPERTIES_LOCATION = System.getenv("APPDATA") + "\\CsNewsAnnounceData.tmp";
 
 	public static int getNumOfUnreadAnnounces() {
@@ -25,7 +26,7 @@ public class AnnounceManager {
 
 	public static void removeReadAnnounces() {
 		List<Announce> read = new ArrayList<>();
-		for (int i = announces.size() - 1; i >= MAX_ANNOUNCEMENTS; i--) {
+		for (int i = announces.size() - 1; i >= Options.ANNOUNCES_MAX_NUMBER.toInt(); i--) {
 			Announce a = announces.get(i);
 			if (a.isRead())
 				read.add(a);

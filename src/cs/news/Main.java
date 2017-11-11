@@ -3,24 +3,24 @@ package cs.news;
 import java.io.IOException;
 
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 import cs.news.announce.AnnounceManager;
 import cs.news.swing.TrayIcon;
 import cs.news.teachers.TeacherManager;
 import cs.news.util.BatchWriter;
-import cs.news.util.Options;
 
 public class Main {
 
 	public static void main(String arguments[]) throws IOException {
 		checkOSCompatibility();
+		SetUpUIManager();
 		AnnounceManager.loadAnnounces();
 		TeacherManager.Initialize();
 		TrayIcon.getInstance();
 		showHelloMessage(arguments);
 		new Timer();
-		if (Options.WINDOWS_STARTUP.toBoolean())
-			BatchWriter.writeBatch();
+		BatchWriter.handleState();
 	}
 
 	private static void checkOSCompatibility() {
@@ -40,10 +40,17 @@ public class Main {
 				showMessage = false;
 		}
 		if (showMessage)
-			TrayIcon.getInstance()
-					.showMessage("Κατάσταση λειτουργίας Tray",
-							"Για κάθε νέα ανακοίνωση της ιστοσελίδας (www.cs.uoi.gr) "
-									+ "θα λάβετε άμεση ειδοποιήση και θα προστεθεί στη λίστα \"Νέες Ανακοινώσεις\".",
-							false);
+			TrayIcon.getInstance().showMessage("Κατάσταση λειτουργίας Tray",
+					"Για κάθε νέα ανακοίνωση της ιστοσελίδας (www.cs.uoi.gr) "
+							+ "θα λάβετε άμεση ειδοποιήση και θα προστεθεί στη λίστα \"Τελευταίες Ανακοινώσεις\".",
+					false);
+	}
+
+	private static void SetUpUIManager() {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
