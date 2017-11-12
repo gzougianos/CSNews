@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
 
 public class BatchWriter {
 	private static final String BATCH_LOCATION = System.getenv("APPDATA")
@@ -19,7 +20,9 @@ public class BatchWriter {
 			String jarLoc = BatchWriter.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
 			jarLoc = jarLoc.substring(1); //Substring the first slash
 			writer.write("@echo off\r\n");
-			writer.write("chcp 65001\r\n");
+			boolean hasNonLatinChars = !Charset.forName("US-ASCII").newEncoder().canEncode(jarLoc);
+			if (hasNonLatinChars) //Command required to run something from non-latin path.
+				writer.write("chcp 65001\r\n");
 			writer.write("IF NOT EXIST \"" + jarLoc + "\" Exit\r\n");
 			writer.write(BATCH_COMMAND.replaceAll("JAR_LOCATION", jarLoc));
 			writer.flush();
