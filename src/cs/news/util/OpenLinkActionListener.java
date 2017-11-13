@@ -7,7 +7,8 @@ import java.io.IOException;
 import cs.news.announce.Announce;
 
 public class OpenLinkActionListener implements ActionListener {
-	private static final String ANNOUNCEMENTS_URL = "\"http://cs.uoi.gr/index.php?menu=m58&id=";
+	private static final String ANNOUNCE_LINK_PREFIX = "\"http://cs.uoi.gr/index.php?menu=m58&id=";
+	private static final String PDF_LINK_PREFIX = "cs.uoi.gr";
 	private String link;
 
 	public OpenLinkActionListener(String link) {
@@ -15,8 +16,11 @@ public class OpenLinkActionListener implements ActionListener {
 	}
 
 	public OpenLinkActionListener(Announce announce) {
-		this.link = Options.OPEN_ANNOUNCEMENTS_IN_PDF.toBoolean() ? announce.getPDFLink()
-				: ANNOUNCEMENTS_URL + announce.getId();
+		if ((Options.OPEN_ANNOUNCEMENTS_IN_PDF.toBoolean()) && (announce.getPDFLink().length() > 1)) {
+			this.link = PDF_LINK_PREFIX + announce.getPDFLink();
+		} else {
+			this.link = ANNOUNCE_LINK_PREFIX + announce.getId();
+		}
 	}
 
 	@Override

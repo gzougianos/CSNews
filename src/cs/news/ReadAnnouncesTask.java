@@ -68,6 +68,6 @@ public class ReadAnnouncesTask extends TimerTask {
 		Document doc = Jsoup.connect(announceLink).get();
 		Element attached = doc.getElementsByClass("newsMoreAttached").first();
 		String href = attached.select("a").attr("href");
-		return "cs.uoi.gr" + href;
+		return href;
 	}
 }
