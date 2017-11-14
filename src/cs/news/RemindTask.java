@@ -1,6 +1,6 @@
 package cs.news;
 
-import static cs.news.util.InternetChecker.AvailableInternetConnection;
+import static cs.news.util.WebUtils.AvailableInternetConnection;
 
 import java.util.TimerTask;
 

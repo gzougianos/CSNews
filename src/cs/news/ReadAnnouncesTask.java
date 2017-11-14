@@ -12,9 +12,10 @@ import cs.news.announce.Announce;
 import cs.news.announce.AnnounceManager;
 import cs.news.swing.TrayIcon;
 import cs.news.util.Options;
+import cs.news.util.WebUtils;
 
 public class ReadAnnouncesTask extends TimerTask {
-	private static final String NEWS_HOMEPAGE = "http://cs.uoi.gr/index.php?menu=m5&page=";
+	private static final String NEWS_LIST_MAINPAGE = "http://cs.uoi.gr/index.php?menu=m5&page=";
 
 	@Override
 	public void run() {
@@ -24,7 +25,7 @@ public class ReadAnnouncesTask extends TimerTask {
 		int announcesRead = 0;
 		try {
 			while (announcesRead < Options.ANNOUNCES_MAX_NUMBER.toInt()) {
-				final String currentPageLink = NEWS_HOMEPAGE + pageNumber;
+				final String currentPageLink = NEWS_LIST_MAINPAGE + pageNumber;
 				Document document = Jsoup.connect(currentPageLink).get();
 				Elements divs = document.getElementsByClass("newPaging");
 				for (Element div : divs) {
@@ -33,7 +34,7 @@ public class ReadAnnouncesTask extends TimerTask {
 					String date = div.select("h3").first().text().split(" - ")[0];
 					String title = hyperLink.text();
 					int id = Integer.parseInt(hyperLink.attr("href").split("id=")[1]);
-					String pdf = getPDFlink("http://cs.uoi.gr/index.php?menu=m58&id=" + id);
+					String pdf = WebUtils.FetchPDFLink(id);
 					Announce a = new Announce(date, title, id, false, color, pdf);
 					announcesRead++;
 					if (announcesRead > Options.ANNOUNCES_MAX_NUMBER.toInt())
@@ -61,13 +62,5 @@ public class ReadAnnouncesTask extends TimerTask {
 			}
 			TrayIcon.getInstance().reBuild();
 		}
-
-	}
-
-	private String getPDFlink(String announceLink) throws IOException {
-		Document doc = Jsoup.connect(announceLink).get();
-		Element attached = doc.getElementsByClass("newsMoreAttached").first();
-		String href = attached.select("a").attr("href");
-		return href;
 	}
 }

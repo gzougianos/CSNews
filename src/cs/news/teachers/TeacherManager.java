@@ -19,6 +19,7 @@ import cs.news.util.Options;
 public class TeacherManager {
 	private static final int REFRESH_DAYS = 60; //Every how many days refresh teachers list.
 	private static final String PROPERTIES_LOCATION = System.getenv("APPDATA") + "\\CsNewsTeacherData.tmp";
+	private static final String TEACHER_LIST_MAINPAGE = "http://cs.uoi.gr/index.php?menu=m4";
 	public static ArrayList<Teacher> teachers = new ArrayList<>();
 
 	public static void refreshTeachersData() {
@@ -29,7 +30,7 @@ public class TeacherManager {
 			return;//There is no reason to sync yet.
 		System.out.println("Synchronizing teachers list...");
 		try {
-			Document doc = Jsoup.connect("http://cs.uoi.gr/index.php?menu=m4").get();
+			Document doc = Jsoup.connect(TEACHER_LIST_MAINPAGE).get();
 			teachers.clear();//clear all teachers
 			Element content = doc.getElementsByClass("content").get(0);
 			Elements teacherElements = content.getElementsByClass("name");
@@ -49,7 +50,6 @@ public class TeacherManager {
 			e.printStackTrace();
 			//	return;
 		}
-
 	}
 
 	private static final String[] getTeachersLinkAndEmail(String teachersLink) throws IOException {

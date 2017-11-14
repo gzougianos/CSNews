@@ -1,6 +1,6 @@
 package cs.news.swing;
 
-import static cs.news.util.InternetChecker.AvailableInternetConnection;
+import static cs.news.util.WebUtils.AvailableInternetConnection;
 
 import java.awt.Color;
 import java.awt.Font;
