@@ -6,8 +6,8 @@ import java.awt.PopupMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import cs.news.announce.Announce;
-import cs.news.announce.AnnounceManager;
+import cs.news.datamanagers.AnnounceManager;
+import cs.news.model.Announce;
 import cs.news.util.OpenLinkActionListener;
 import cs.news.util.Options;
 
@@ -18,7 +18,7 @@ public class TrayPopUp extends PopupMenu {
 		super();
 		PopupMenu announcesMenu = new PopupMenu("Τελευταίες Ανακοινώσεις");
 		announcesMenu.addSeparator();
-		for (Announce a : AnnounceManager.announces) {
+		for (Announce a : AnnounceManager.getInstance().getData()) {
 			MenuItem m = new MenuItem(adjustTitleLength(a));
 			m.addActionListener(new OpenLinkActionListener(a));
 			m.addActionListener(new ActionListener() {
@@ -38,11 +38,11 @@ public class TrayPopUp extends PopupMenu {
 		markAllAsReadMenu.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				for (Announce a : AnnounceManager.announces) {
+				for (Announce a : AnnounceManager.getInstance().getData()) {
 					a.setRead(true);
 				}
-				AnnounceManager.removeReadAnnounces();
-				AnnounceManager.saveAnnounces();
+				AnnounceManager.getInstance().removeReadAnnounces();
+				AnnounceManager.getInstance().saveData();
 				TrayIcon.getInstance().reBuild();
 			}
 		});
@@ -51,7 +51,7 @@ public class TrayPopUp extends PopupMenu {
 		exitMenu.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				AnnounceManager.saveAnnounces();
+				AnnounceManager.getInstance().saveData();
 				System.exit(0);
 			}
 		});
@@ -65,6 +65,8 @@ public class TrayPopUp extends PopupMenu {
 		});
 		add(new LinksPopUpMenu());
 		add(new TeachersPopUpMenu());
+		addSeparator();
+		add(new SchedulesPopUpMenu());
 		addSeparator();
 		add(announcesMenu);
 		add(markAllAsReadMenu);

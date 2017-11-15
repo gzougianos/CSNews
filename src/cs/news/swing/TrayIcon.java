@@ -12,7 +12,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import cs.news.announce.AnnounceManager;
+import cs.news.datamanagers.AnnounceManager;
 
 public class TrayIcon extends java.awt.TrayIcon {
 	private static final String TRAY_NAME = "CSE News";
@@ -31,7 +31,7 @@ public class TrayIcon extends java.awt.TrayIcon {
 			setToolTip("Δεν υπάρχει σύνδεση στο Internet.");
 			setImage(createImage("--"));
 		} else {
-			int unread = AnnounceManager.getNumOfUnreadAnnounces();
+			int unread = AnnounceManager.getInstance().getNumOfUnreadAnnounces();
 			setToolTip(TRAY_NAME + "\n" + +unread + (unread == 1 ? " Νέα Ανακοίνωση" : " Νέες Ανακοινώσεις"));
 			setImage(createImage(unread == 0 ? "" : String.valueOf(unread)));
 		}

@@ -5,9 +5,9 @@ import java.io.IOException;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
-import cs.news.announce.AnnounceManager;
+import cs.news.datamanagers.AnnounceManager;
+import cs.news.datamanagers.TeacherManager;
 import cs.news.swing.TrayIcon;
-import cs.news.teachers.TeacherManager;
 import cs.news.util.BatchWriter;
 
 public class Main {
@@ -15,8 +15,8 @@ public class Main {
 	public static void main(String arguments[]) throws IOException {
 		checkOSCompatibility();
 		SetUpUIManager();
-		AnnounceManager.loadAnnounces();
-		TeacherManager.Initialize();
+		AnnounceManager.getInstance();
+		TeacherManager.getInstance();
 		TrayIcon.getInstance();
 		showHelloMessage(arguments);
 		new Timer();
