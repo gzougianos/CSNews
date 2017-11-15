@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-public abstract class DataManager {
+import cs.news.util.WebDataParser;
+
+public abstract class DataManager implements WebDataParser {
 	private static final String HOME_DIRECTORY = System.getenv("APPDATA") + "\\";
 	private String filePath;
 
@@ -16,6 +18,8 @@ public abstract class DataManager {
 	}
 
 	public abstract Object getData();
+
+	public abstract void parseDataFromWeb();
 
 	protected final boolean dataFileExists() {
 		return new File(filePath).exists();
