@@ -38,8 +38,13 @@ public enum Options {
 		return PrefsHolder.PREFERENCES.get(key, String.valueOf(defaultValue));
 	}
 
-	public void update(Object newValue) {
-		PrefsHolder.PREFERENCES.put(key, String.valueOf(newValue));
+	public boolean update(Object newValue) {
+		String oldVal = PrefsHolder.PREFERENCES.get(key, String.valueOf(defaultValue));
+		String newVal = String.valueOf(newValue);
+		if (newVal.equals(oldVal))
+			return false; // Value did not change
+		PrefsHolder.PREFERENCES.put(key, newVal);
+		return true;
 	}
 
 	private static final class PrefsHolder {

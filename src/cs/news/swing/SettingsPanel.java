@@ -42,8 +42,7 @@ public class SettingsPanel extends JPanel {
 		maxAnnouncesTxt = new JTextField();
 		maxAnnouncesTxt.setHorizontalAlignment(SwingConstants.LEFT);
 		maxAnnouncesTxt.setText("Μέγιστος αριθμός:");
-		maxAnnouncesTxt.setToolTipText("<html>Προτιμήστε μικρούς αριθμούς για αποφυγή καθυστέρησης συγχρονισμού."
-				+ "<br>Προτεινόμενη Τιμή: 10</html>");
+		maxAnnouncesTxt.setToolTipText("<html>Προτιμήστε μικρούς αριθμούς για αποφυγή καθυστέρησης συγχρονισμού." + "<br>Προτεινόμενη Τιμή: 10</html>");
 		maxAnnouncesTxt.setEditable(false);
 		maxAnnouncesTxt.setBorder(BorderFactory.createEmptyBorder());
 		maxAnnouncesTxt.setBounds(6, 24, 201, 20);
@@ -52,8 +51,7 @@ public class SettingsPanel extends JPanel {
 
 		announceSpinner.setBounds(217, 24, 41, 20);
 		announceSpinner.setValue(Options.ANNOUNCES_MAX_NUMBER.toInt());
-		announceSpinner.setToolTipText("<html>Προτιμήστε μικρούς αριθμούς για αποφυγή καθυστέρησης συγχρονισμού."
-				+ "<br>Προτεινόμενη Τιμή: 10</html>");
+		announceSpinner.setToolTipText("<html>Προτιμήστε μικρούς αριθμούς για αποφυγή καθυστέρησης συγχρονισμού." + "<br>Προτεινόμενη Τιμή: 10</html>");
 		add(announceSpinner);
 
 		openInPdfCheckBox.setBounds(2, 45, 141, 20);
@@ -64,8 +62,7 @@ public class SettingsPanel extends JPanel {
 		add(openInPdfCheckBox);
 
 		JTextField announcementSyncTxt = new JTextField("Περίοδος Συγχρονισμού:");
-		announcementSyncTxt.setToolTipText(
-				"<html>Κάθε πόσα λεπτά θα γίνεται έλεγχος για νέες ανακοινώσεις.<br>Προτεινόμενη τιμή: 30 λεπτά</html>");
+		announcementSyncTxt.setToolTipText("<html>Κάθε πόσα λεπτά θα γίνεται έλεγχος για νέες ανακοινώσεις.<br>Προτεινόμενη τιμή: 30 λεπτά</html>");
 		announcementSyncTxt.setHorizontalAlignment(SwingConstants.LEFT);
 		announcementSyncTxt.setEditable(false);
 		announcementSyncTxt.setBounds(6, 66, 201, 20);
@@ -96,8 +93,7 @@ public class SettingsPanel extends JPanel {
 		maxCharsInAnnounceTxT = new JTextField("Μέγιστος αριθμός χαρακτήρων εμφάνισης:");
 		maxCharsInAnnounceTxT.setEditable(false);
 		maxCharsInAnnounceTxT.setBorder(BorderFactory.createEmptyBorder());
-		maxCharsInAnnounceTxT.setToolTipText(
-				"<html>Αριθμός χαρακτήρων που θα εμφανίζονται στην επικεφαλίδα μιας ανακοίνωσης.<br>Προτεινόμενη τιμή: 70</html>");
+		maxCharsInAnnounceTxT.setToolTipText("<html>Αριθμός χαρακτήρων που θα εμφανίζονται στην επικεφαλίδα μιας ανακοίνωσης.<br>Προτεινόμενη τιμή: 70</html>");
 		maxCharsInAnnounceTxT.setHorizontalAlignment(SwingConstants.LEFT);
 		maxCharsInAnnounceTxT.setBounds(6, 108, 211, 20);
 		add(maxCharsInAnnounceTxT);
@@ -126,17 +122,19 @@ public class SettingsPanel extends JPanel {
 	public static void open() {
 		SettingsPanel panel = new SettingsPanel();
 		//Exit == 1, Save == 0
-		int answer = JOptionPane.showOptionDialog(null, panel, "Ρυθμίσεις", JOptionPane.OK_CANCEL_OPTION,
-				JOptionPane.PLAIN_MESSAGE, null, DIALOG_OPTIONS, 1);
+		int answer = JOptionPane.showOptionDialog(null, panel, "Ρυθμίσεις", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, DIALOG_OPTIONS, 1);
 		if (answer == 0) {
-			Options.ANNOUNCES_MAX_NUMBER.update(panel.getOptionMaxAnnouncements());
-			Options.OPEN_ANNOUNCEMENTS_IN_PDF.update(panel.getOptionPDFAnnouncements());
-			Options.SYNC_ANNOUNCES_TIME.update(panel.getOptionSyncAnnouncesTime());
-			Options.REMIND_ANNOUNCES_TIME.update(panel.getOptionRemindAnnouncesTime());
-			Options.WINDOWS_STARTUP.update(panel.getOptionWindowsStartUp());
-			Options.MAX_CHARACTERS_ANNOUNCE_MENU_ITEM.update(panel.getOptionMaxCharsInAnnouncements());
-			Timer.restart();
-			BatchWriter.handleState();
+			boolean somethingChanged = false;
+			somethingChanged |= Options.ANNOUNCES_MAX_NUMBER.update(panel.getOptionMaxAnnouncements());
+			somethingChanged |= Options.OPEN_ANNOUNCEMENTS_IN_PDF.update(panel.getOptionPDFAnnouncements());
+			somethingChanged |= Options.SYNC_ANNOUNCES_TIME.update(panel.getOptionSyncAnnouncesTime());
+			somethingChanged |= Options.REMIND_ANNOUNCES_TIME.update(panel.getOptionRemindAnnouncesTime());
+			somethingChanged |= Options.WINDOWS_STARTUP.update(panel.getOptionWindowsStartUp());
+			somethingChanged |= Options.MAX_CHARACTERS_ANNOUNCE_MENU_ITEM.update(panel.getOptionMaxCharsInAnnouncements());
+			if (somethingChanged) {
+				Timer.restart();
+				BatchWriter.handleState();
+			}
 		}
 	}
 
