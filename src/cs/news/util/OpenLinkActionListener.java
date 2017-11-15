@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-import cs.news.announce.Announce;
+import cs.news.model.Announce;
 
 public class OpenLinkActionListener implements ActionListener {
 	private String link;

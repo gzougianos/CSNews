@@ -1,11 +1,6 @@
-package cs.news.teachers;
+package cs.newsdatamanagers;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -14,20 +9,27 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import cs.news.model.Teacher;
 import cs.news.util.Options;
 
-public class TeacherManager {
-	private static final int REFRESH_DAYS = 60; //Every how many days refresh teachers list.
-	private static final String PROPERTIES_LOCATION = System.getenv("APPDATA") + "\\CsNewsTeacherData.tmp";
-	private static final String TEACHER_LIST_MAINPAGE = "http://cs.uoi.gr/index.php?menu=m4";
-	public static ArrayList<Teacher> teachers = new ArrayList<>();
+public class TeacherManager extends DataManager {
+	private ArrayList<Teacher> teachers;
 
-	public static void refreshTeachersData() {
-		long lastTimeRead = Options.LAST_TIME_TEACHERS_SYNC.toLong();
-		boolean daysPassed = TimeUnit.DAYS.toMillis(REFRESH_DAYS) + lastTimeRead < System.currentTimeMillis();
-		boolean fileExists = new File(PROPERTIES_LOCATION).exists();
-		if (fileExists && !daysPassed)
-			return;//There is no reason to sync yet.
+	@SuppressWarnings("unchecked")
+	protected TeacherManager() {
+		super("CsNewsTeacherData.tmp");
+		teachers = (ArrayList<Teacher>) loadData();
+		if (teachers == null)
+			teachers = new ArrayList<>();
+		refreshTeachersData();
+	}
+
+	private static final int REFRESH_DAYS = 60; //Every how many days refresh teachers list.
+	private static final String TEACHER_LIST_MAINPAGE = "http://cs.uoi.gr/index.php?menu=m4";
+
+	public void refreshTeachersData() {
+		if (!readyToRefreshData())
+			return;
 		System.out.println("Synchronizing teachers list...");
 		try {
 			Document doc = Jsoup.connect(TEACHER_LIST_MAINPAGE).get();
@@ -45,7 +47,7 @@ public class TeacherManager {
 				teachers.add(teacher);
 			}
 			Options.LAST_TIME_TEACHERS_SYNC.update(System.currentTimeMillis());
-			saveTeachersData();
+			saveData();
 		} catch (Exception e) {
 			e.printStackTrace();
 			//	return;
@@ -67,40 +69,22 @@ public class TeacherManager {
 		return linkAndMail;
 	}
 
-	public static void Initialize() {
-		loadTeachersData();
-		refreshTeachersData();
+	private boolean readyToRefreshData() {
+		long lastTimeRead = Options.LAST_TIME_TEACHERS_SYNC.toLong();
+		boolean daysPassed = TimeUnit.DAYS.toMillis(REFRESH_DAYS) + lastTimeRead < System.currentTimeMillis();
+		return !dataFileExists() || daysPassed;
 	}
 
-	@SuppressWarnings("unchecked")
-	private static void loadTeachersData() {
-		try {
-			File f = new File(PROPERTIES_LOCATION);
-			if (!f.exists()) {
-				//Create the folder
-				f.getParentFile().mkdir();
-				return;
-			}
-			FileInputStream fis;
-			fis = new FileInputStream(PROPERTIES_LOCATION);
-			ObjectInputStream ois = new ObjectInputStream(fis);
-			teachers = (ArrayList<Teacher>) ois.readObject();
-			ois.close();
-		} catch (IOException | ClassNotFoundException e1) {
-			e1.printStackTrace();
-		}
-
+	@Override
+	public ArrayList<Teacher> getData() {
+		return teachers;
 	}
 
-	private static void saveTeachersData() {
-		try {
-			FileOutputStream fos = new FileOutputStream(PROPERTIES_LOCATION);
-			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(teachers);
-			oos.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.out.println("Can't save teachers.");
-		}
+	public static final TeacherManager getInstance() {
+		return SingletonHolder._instance;
+	}
+
+	private static final class SingletonHolder {
+		protected static final TeacherManager _instance = new TeacherManager();
 	}
 }

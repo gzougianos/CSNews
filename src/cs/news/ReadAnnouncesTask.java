@@ -8,11 +8,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import cs.news.announce.Announce;
-import cs.news.announce.AnnounceManager;
+import cs.news.model.Announce;
 import cs.news.swing.TrayIcon;
 import cs.news.util.Options;
 import cs.news.util.WebUtils;
+import cs.newsdatamanagers.AnnounceManager;
 
 public class ReadAnnouncesTask extends TimerTask {
 	private static final String NEWS_LIST_MAINPAGE = "http://cs.uoi.gr/index.php?menu=m5&page=";
@@ -39,13 +39,13 @@ public class ReadAnnouncesTask extends TimerTask {
 					announcesRead++;
 					if (announcesRead > Options.ANNOUNCES_MAX_NUMBER.toInt())
 						break;
-					if (!AnnounceManager.announceAlreadyExists(a)) {
+					if (!AnnounceManager.getInstance().announceAlreadyExists(a)) {
 						extracts++;
-						int size = AnnounceManager.announces.size();
+						int size = AnnounceManager.getInstance().getData().size();
 						if (size >= Options.ANNOUNCES_MAX_NUMBER.toInt())
-							AnnounceManager.announces.add(0, a); // To the top of the stack
+							AnnounceManager.getInstance().getData().add(0, a); // To the top of the stack
 						else
-							AnnounceManager.announces.add(a);
+							AnnounceManager.getInstance().getData().add(a);
 					}
 				}
 				pageNumber++;//next Page
@@ -54,8 +54,8 @@ public class ReadAnnouncesTask extends TimerTask {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-			AnnounceManager.removeReadAnnounces();
-			AnnounceManager.saveAnnounces();
+			AnnounceManager.getInstance().removeReadAnnounces();
+			AnnounceManager.getInstance().saveData();
 			if (extracts > 0) {
 				TrayIcon.getInstance().showMessage("CS News",
 						extracts + (extracts == 1 ? " νέα ανακοίνωση!" : " νέες ανακοινώσεις!"), true);

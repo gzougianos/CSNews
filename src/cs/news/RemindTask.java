@@ -4,14 +4,14 @@ import static cs.news.util.WebUtils.AvailableInternetConnection;
 
 import java.util.TimerTask;
 
-import cs.news.announce.AnnounceManager;
 import cs.news.swing.TrayIcon;
+import cs.newsdatamanagers.AnnounceManager;
 
 public class RemindTask extends TimerTask {
 
 	@Override
 	public void run() {
-		int unreadAnnounces = AnnounceManager.getNumOfUnreadAnnounces();
+		int unreadAnnounces = AnnounceManager.getInstance().getNumOfUnreadAnnounces();
 		if (!AvailableInternetConnection()) {
 			TrayIcon.getInstance().reBuild();
 			return; // If no connection, don't remind anything.

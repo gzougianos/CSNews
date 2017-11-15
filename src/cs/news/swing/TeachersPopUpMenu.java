@@ -6,18 +6,18 @@ import java.awt.PopupMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import cs.news.teachers.Teacher;
-import cs.news.teachers.TeacherManager;
+import cs.news.model.Teacher;
 import cs.news.util.OpenLinkActionListener;
 import cs.news.util.Options;
+import cs.newsdatamanagers.TeacherManager;
 
 public class TeachersPopUpMenu extends PopupMenu {
 	private static final long serialVersionUID = 7395061034799793743L;
 
 	public TeachersPopUpMenu() {
 		super("’νοιγμα Ιστοθεσίας Καθηγητή");
-		for (int i = 0; i < TeacherManager.teachers.size(); i++) {
-			Teacher t = TeacherManager.teachers.get(i);
+		for (int i = 0; i < TeacherManager.getInstance().getData().size(); i++) {
+			Teacher t = TeacherManager.getInstance().getData().get(i);
 			final int index = i;
 			MenuItem item = new MenuItem(t.getName() + " (" + t.getEmail() + ")");
 			item.addActionListener(new OpenLinkActionListener(t.getWebsite()));

@@ -1,4 +1,4 @@
-package cs.news.announce;
+package cs.news.model;
 
 import java.io.Serializable;
 

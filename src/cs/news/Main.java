@@ -5,18 +5,18 @@ import java.io.IOException;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
-import cs.news.announce.AnnounceManager;
 import cs.news.swing.TrayIcon;
-import cs.news.teachers.TeacherManager;
 import cs.news.util.BatchWriter;
+import cs.newsdatamanagers.AnnounceManager;
+import cs.newsdatamanagers.TeacherManager;
 
 public class Main {
 
 	public static void main(String arguments[]) throws IOException {
 		checkOSCompatibility();
 		SetUpUIManager();
-		AnnounceManager.loadAnnounces();
-		TeacherManager.Initialize();
+		AnnounceManager.getInstance();
+		TeacherManager.getInstance();
 		TrayIcon.getInstance();
 		showHelloMessage(arguments);
 		new Timer();
