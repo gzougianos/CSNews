@@ -6,10 +6,10 @@ import java.awt.PopupMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import cs.news.datamanagers.TeacherManager;
 import cs.news.model.Teacher;
 import cs.news.util.OpenLinkActionListener;
 import cs.news.util.Options;
-import cs.newsdatamanagers.TeacherManager;
 
 public class TeachersPopUpMenu extends PopupMenu {
 	private static final long serialVersionUID = 7395061034799793743L;

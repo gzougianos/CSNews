@@ -1,4 +1,4 @@
-package cs.newsdatamanagers;
+package cs.news.datamanagers;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,10 +19,19 @@ public abstract class DataManager implements WebDataParser {
 
 	public abstract Object getData();
 
-	public abstract void parseDataFromWeb();
+	@Override
+	public final void parseWebData() {
+		if (!parseWebDataCondition())
+			return;
+		parseData();
+	}
 
-	protected final boolean dataFileExists() {
-		return new File(filePath).exists();
+	protected abstract boolean parseWebDataCondition();
+
+	protected abstract void parseData();
+
+	protected final File getDataFile() {
+		return new File(filePath);
 	}
 
 	protected final Object loadData() {
@@ -55,4 +64,5 @@ public abstract class DataManager implements WebDataParser {
 			e.printStackTrace();
 		}
 	}
+
 }

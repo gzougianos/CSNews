@@ -1,4 +1,4 @@
-package cs.newsdatamanagers;
+package cs.news.datamanagers;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,29 +40,20 @@ public class TeacherManager extends DataManager {
 		return linkAndMail;
 	}
 
-	private boolean readyToRefreshData() {
-		long lastTimeRead = Options.LAST_TIME_TEACHERS_SYNC.toLong();
-		boolean daysPassed = TimeUnit.DAYS.toMillis(REFRESH_DAYS) + lastTimeRead < System.currentTimeMillis();
-		return !dataFileExists() || daysPassed;
-	}
-
 	@Override
 	public ArrayList<Teacher> getData() {
 		return teachers;
 	}
 
-	public static final TeacherManager getInstance() {
-		return SingletonHolder._instance;
-	}
-
-	private static final class SingletonHolder {
-		protected static final TeacherManager _instance = new TeacherManager();
+	@Override
+	protected boolean parseWebDataCondition() {
+		long lastTimeRead = Options.LAST_TIME_TEACHERS_SYNC.toLong();
+		boolean daysPassed = TimeUnit.DAYS.toMillis(REFRESH_DAYS) + lastTimeRead < System.currentTimeMillis();
+		return !getDataFile().exists() || daysPassed;
 	}
 
 	@Override
-	public void parseDataFromWeb() {
-		if (!readyToRefreshData())
-			return;
+	protected void parseData() {
 		System.out.println("Synchronizing teachers list...");
 		try {
 			Document doc = Jsoup.connect(TEACHER_LIST_MAINPAGE).get();
@@ -82,8 +73,15 @@ public class TeacherManager extends DataManager {
 			Options.LAST_TIME_TEACHERS_SYNC.update(System.currentTimeMillis());
 			saveData();
 		} catch (Exception e) {
-			e.printStackTrace();
-			//	return;
+			System.out.println("Error parsing teachers data.");
 		}
+	}
+
+	public static final TeacherManager getInstance() {
+		return SingletonHolder._instance;
+	}
+
+	private static final class SingletonHolder {
+		protected static final TeacherManager _instance = new TeacherManager();
 	}
 }

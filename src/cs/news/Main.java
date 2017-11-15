@@ -5,10 +5,10 @@ import java.io.IOException;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
+import cs.news.datamanagers.AnnounceManager;
+import cs.news.datamanagers.TeacherManager;
 import cs.news.swing.TrayIcon;
 import cs.news.util.BatchWriter;
-import cs.newsdatamanagers.AnnounceManager;
-import cs.newsdatamanagers.TeacherManager;
 
 public class Main {
 

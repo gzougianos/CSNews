@@ -6,10 +6,10 @@ import java.awt.PopupMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import cs.news.datamanagers.AnnounceManager;
 import cs.news.model.Announce;
 import cs.news.util.OpenLinkActionListener;
 import cs.news.util.Options;
-import cs.newsdatamanagers.AnnounceManager;
 
 public class TrayPopUp extends PopupMenu {
 	private static final long serialVersionUID = -1233037255379467666L;
@@ -42,7 +42,6 @@ public class TrayPopUp extends PopupMenu {
 					a.setRead(true);
 				}
 				AnnounceManager.getInstance().removeReadAnnounces();
-
 				AnnounceManager.getInstance().saveData();
 				TrayIcon.getInstance().reBuild();
 			}
@@ -66,6 +65,8 @@ public class TrayPopUp extends PopupMenu {
 		});
 		add(new LinksPopUpMenu());
 		add(new TeachersPopUpMenu());
+		addSeparator();
+		add(new SchedulesPopUpMenu());
 		addSeparator();
 		add(announcesMenu);
 		add(markAllAsReadMenu);

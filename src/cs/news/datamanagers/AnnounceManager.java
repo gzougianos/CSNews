@@ -1,4 +1,4 @@
-package cs.newsdatamanagers;
+package cs.news.datamanagers;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,7 +17,6 @@ import cs.news.util.WebUtils;
 
 public class AnnounceManager extends DataManager {
 	private Stack<Announce> announces;
-	private static final String NEWS_LIST_MAINPAGE = "http://cs.uoi.gr/index.php?menu=m5&page=";
 
 	@SuppressWarnings("unchecked")
 	protected AnnounceManager() {
@@ -55,14 +54,19 @@ public class AnnounceManager extends DataManager {
 	}
 
 	@Override
-	public void parseDataFromWeb() {
+	protected boolean parseWebDataCondition() {
+		return true; //No condition
+	}
+
+	@Override
+	protected void parseData() {
 		TrayIcon.getInstance().showSyncImage();
 		int pageNumber = 1;
 		int extracts = 0;
 		int announcesRead = 0;
 		try {
 			while (announcesRead < Options.ANNOUNCES_MAX_NUMBER.toInt()) {
-				final String currentPageLink = NEWS_LIST_MAINPAGE + pageNumber;
+				final String currentPageLink = WebUtils.NEWS_LIST_MAINPAGE + pageNumber;
 				Document document = Jsoup.connect(currentPageLink).get();
 				Elements divs = document.getElementsByClass("newPaging");
 				for (Element div : divs) {
@@ -88,7 +92,7 @@ public class AnnounceManager extends DataManager {
 				pageNumber++;//next Page
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("Error parsing announcements.");
 		} finally {
 			removeReadAnnounces();
 			saveData();

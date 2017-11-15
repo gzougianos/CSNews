@@ -5,11 +5,11 @@ import static cs.news.util.WebUtils.AvailableInternetConnection;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
+import cs.news.datamanagers.AnnounceManager;
+import cs.news.datamanagers.TeacherManager;
 import cs.news.swing.TrayIcon;
 import cs.news.util.Options;
 import cs.news.util.WebDataParser;
-import cs.newsdatamanagers.AnnounceManager;
-import cs.newsdatamanagers.TeacherManager;
 
 public class Timer extends java.util.Timer {
 	private static final long ANNOUNCES_READ_TASK_INITIAL = 1; //1 Second
@@ -41,7 +41,7 @@ public class Timer extends java.util.Timer {
 
 		@Override
 		public void run() {
-			manager.parseDataFromWeb();
+			manager.parseWebData();
 		}
 	}
 
