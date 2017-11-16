@@ -1,8 +1,11 @@
 package cs.news.util;
 
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import cs.news.model.Announce;
 
@@ -24,8 +27,9 @@ public class OpenLinkActionListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		try {
-			Runtime.getRuntime().exec(new String[] { "cmd", "/c", ("start chrome " + "\"" + link + "\"") });
-		} catch (IOException exc) {
+			Desktop.getDesktop().browse(new URI(link));
+			//Runtime.getRuntime().exec(new String[] { "cmd", "/c", ("start chrome " + "\"" + link + "\"") });
+		} catch (IOException | URISyntaxException exc) {
 			exc.printStackTrace();
 		}
 	}
