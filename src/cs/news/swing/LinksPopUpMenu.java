@@ -20,6 +20,7 @@ public class LinksPopUpMenu extends PopupMenu {
 	private enum Link {
 		//@formatter:off
 		HOMEPAGE("Αρχική (cs.uoi.gr)","http://cs.uoi.gr/"),
+		FACEBOOK("Facebook Group (CS Forces)","https://web.facebook.com/groups/189583917734491/"),
 		ECOURSE("E-Course (ecourse.uoi.gr)","http://ecourse.uoi.gr/"),
 		EUDOXUS("Εύδοξος (eudoxus.gr)","https://service.eudoxus.gr/student/"),
 		CHRONOS("Chronos (cronos.cc.uoi.gr)","https://cronos.cc.uoi.gr/unistudent/"),
