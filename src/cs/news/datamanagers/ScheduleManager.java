@@ -1,6 +1,7 @@
 package cs.news.datamanagers;
 
 import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 
 import org.jsoup.Jsoup;
@@ -12,6 +13,7 @@ import cs.news.util.WebUtils;
 
 public class ScheduleManager extends DataManager {
 	private String scheduleKey;
+	private static final String FEEDING_SCHEDULES_MAINPAGE = "http://www.uoi.gr/tag/menou-lesxis/";
 
 	protected ScheduleManager(String fileName, String scheduleKey) {
 		super(fileName);
@@ -54,6 +56,32 @@ public class ScheduleManager extends DataManager {
 		return true;
 	}
 
+	private static String getFeedingScheduleURL() {
+		Document doc;
+		try {
+			doc = Jsoup.connect(FEEDING_SCHEDULES_MAINPAGE).get();
+			Element mainElement = doc.getElementsByClass("blog-content wf-td").first();
+			Elements hrefs = mainElement.getElementsByAttribute("href");
+			for (Element href : hrefs) {
+				String hrefLink = href.select("a").attr("href");
+				if (hrefLink.contains("Menu_Lesxis_"))
+					return hrefLink;
+			}
+		} catch (IOException e1) {
+			System.out.println("Error getting feeding schedule URL.");
+		}
+		return null;
+	}
+
+	public static void openFeedingSchedule() throws IOException {
+		File f = new File(DataManager.HOME_DIRECTORY + "//lesxi.pdf");
+		WebUtils.DownloadPDF(getFeedingScheduleURL(), f);//Sync schedule before open
+		if (f.exists())
+			Desktop.getDesktop().open(f);
+		else
+			throw new IOException();
+	}
+
 	public enum Schedule {
 		//@formatter:off
 		LECTURES("lectures.pdf","Πρόγραμμα Μαθημάτων"),
@@ -79,4 +107,5 @@ public class ScheduleManager extends DataManager {
 				throw new IOException();
 		}
 	}
+
 }

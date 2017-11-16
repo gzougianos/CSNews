@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+import cs.news.datamanagers.ScheduleManager;
 import cs.news.datamanagers.ScheduleManager.Schedule;
 
 public class SchedulesPopUpMenu extends PopupMenu {
@@ -23,13 +24,28 @@ public class SchedulesPopUpMenu extends PopupMenu {
 					try {
 						s.open();
 					} catch (IOException e1) {
-						TrayIcon.getInstance().showMessage("Προβολή Προγράμματος",
-								"Το πρόγραμμα δεν είναι διαθέσιμο αυτή τη στιγμή.", true);
+						showUnavailableScheduleMsg();
 					}
 				}
 			});
 			add(m);
 		}
+		MenuItem feedScheduleMenu = new MenuItem("Σίτισης");
+		feedScheduleMenu.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					ScheduleManager.openFeedingSchedule();
+				} catch (IOException e) {
+					showUnavailableScheduleMsg();
+				}
+			}
+		});
+		add(feedScheduleMenu);
 	}
 
+	private static void showUnavailableScheduleMsg() {
+		TrayIcon.getInstance().showMessage("Προβολή Προγράμματος", "Το πρόγραμμα δεν είναι διαθέσιμο αυτή τη στιγμή.", true);
+	}
 }

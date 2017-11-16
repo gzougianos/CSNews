@@ -10,7 +10,7 @@ import java.io.ObjectOutputStream;
 import cs.news.util.WebDataParser;
 
 public abstract class DataManager implements WebDataParser {
-	private static final String HOME_DIRECTORY = System.getenv("APPDATA") + "\\CSE News\\";
+	public static final String HOME_DIRECTORY = System.getenv("APPDATA") + "\\CSE News\\";
 	private String filePath;
 
 	protected DataManager(String dataFileName) {
