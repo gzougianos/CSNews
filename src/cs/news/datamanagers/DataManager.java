@@ -7,9 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import cs.news.util.WebDataParser;
-
-public abstract class DataManager implements WebDataParser {
+public abstract class DataManager {
 	public static final String HOME_DIRECTORY = System.getenv("APPDATA") + "\\CSE News\\";
 	private String filePath;
 
@@ -19,7 +17,6 @@ public abstract class DataManager implements WebDataParser {
 
 	public abstract Object getData();
 
-	@Override
 	public final void parseWebData() {
 		if (!parseWebDataCondition())
 			return;
