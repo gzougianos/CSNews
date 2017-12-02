@@ -1,8 +1,10 @@
 package cs.news.swing;
 
 import java.awt.Dimension;
+import java.awt.Font;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -12,12 +14,14 @@ import javax.swing.SwingConstants;
 
 import cs.news.Timer;
 import cs.news.util.BatchWriter;
+import cs.news.util.OpenLinkActionListener;
 import cs.news.util.Options;
 
 public class SettingsPanel extends JPanel {
 	private static final long serialVersionUID = 6429776879534491034L;
 	private static final Object[] DIALOG_OPTIONS = { "Αποθήκευση", "Ακύρωση" };
-	private static final Dimension PANEL_DIMENSION = new Dimension(265, 205);
+	private static final Dimension PANEL_DIMENSION = new Dimension(265, 225);
+	private static final String PROGRAM_INFO_LINK = "https://github.com/GiorgosZougianos/CSNews";
 	private JSpinner announceSpinner = new JSpinner();
 	private JCheckBox openInPdfCheckBox = new JCheckBox();
 	private JSpinner syncSpinner = new JSpinner();
@@ -117,6 +121,12 @@ public class SettingsPanel extends JPanel {
 		windowsStartupCheckBox.setSelected(Options.WINDOWS_STARTUP.toBoolean());
 		windowsStartupCheckBox.setBounds(6, 164, 201, 23);
 		add(windowsStartupCheckBox);
+
+		JButton programInfoButton = new JButton("Πληροφορίες σχετικά με το Πρόγραμμα");
+		programInfoButton.addActionListener(new OpenLinkActionListener(PROGRAM_INFO_LINK));
+		programInfoButton.setFont(new Font(programInfoButton.getFont().getFontName(), 0, 9));
+		programInfoButton.setBounds(31, 194, 201, 23);
+		add(programInfoButton);
 	}
 
 	public static void open() {
