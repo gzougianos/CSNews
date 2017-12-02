@@ -10,6 +10,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import cs.news.model.Teacher;
+import cs.news.util.Debugger;
 import cs.news.util.Options;
 
 public class TeacherManager extends DataManager {
@@ -73,7 +74,7 @@ public class TeacherManager extends DataManager {
 			Options.LAST_TIME_TEACHERS_SYNC.update(System.currentTimeMillis());
 			saveData();
 		} catch (Exception e) {
-			System.out.println("Error parsing teachers data.");
+			Debugger.showException(e, getClass(), "Error parsing teachers data.", true);
 		}
 	}
 

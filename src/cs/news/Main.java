@@ -1,6 +1,8 @@
 package cs.news;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
@@ -9,41 +11,39 @@ import cs.news.datamanagers.AnnounceManager;
 import cs.news.datamanagers.TeacherManager;
 import cs.news.swing.TrayIcon;
 import cs.news.util.BatchWriter;
+import cs.news.util.Debugger;
 
 public class Main {
+	private static final String SILENT_MODE_ARGUMENT = "sil";
+	private static final String ADMIN_MODE_ARGUMENT = "adm";
+	private static List<String> arguments;
 
-	public static void main(String arguments[]) throws IOException {
+	public static void main(String args[]) throws IOException {
 		checkOSCompatibility();
 		SetUpUIManager();
+		arguments = Arrays.asList(args);
+		if (!arguments.contains(SILENT_MODE_ARGUMENT) && !arguments.contains(SILENT_MODE_ARGUMENT.toUpperCase())) //Silent Mode
+			showHelloMessage();
+		if (arguments.contains(ADMIN_MODE_ARGUMENT) || arguments.contains(ADMIN_MODE_ARGUMENT.toUpperCase())) //Admin mode
+			Debugger.enable();
 		AnnounceManager.getInstance();
 		TeacherManager.getInstance();
 		TrayIcon.getInstance();
-		showHelloMessage(arguments);
 		new Timer();
 		BatchWriter.handleState();
+	}
+
+	private static void showHelloMessage() {
+		TrayIcon.getInstance().showMessage("Κατάσταση λειτουργίας Tray",
+				"Για κάθε νέα ανακοίνωση της ιστοσελίδας (www.cs.uoi.gr) " + "θα λάβετε άμεση ειδοποιήση και θα προστεθεί στη λίστα \"Τελευταίες Ανακοινώσεις\".", false);
 	}
 
 	private static void checkOSCompatibility() {
 		String OS = System.getProperty("os.name");
 		if (!OS.toLowerCase().contains("windows")) {
-			JOptionPane.showMessageDialog(null, "This program is not compatible with your Operating System",
-					"OS Failure", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "This program is not compatible with your Operating System", "OS Failure", JOptionPane.ERROR_MESSAGE);
 			System.exit(0);
 		}
-	}
-
-	private static void showHelloMessage(String[] arguments) {
-		//Check if runs in silent mode
-		boolean showMessage = true;
-		for (String s : arguments) {
-			if (s.contains("sil"))
-				showMessage = false;
-		}
-		if (showMessage)
-			TrayIcon.getInstance().showMessage("Κατάσταση λειτουργίας Tray",
-					"Για κάθε νέα ανακοίνωση της ιστοσελίδας (www.cs.uoi.gr) "
-							+ "θα λάβετε άμεση ειδοποιήση και θα προστεθεί στη λίστα \"Τελευταίες Ανακοινώσεις\".",
-					false);
 	}
 
 	private static void SetUpUIManager() {

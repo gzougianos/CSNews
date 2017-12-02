@@ -9,6 +9,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import cs.news.util.Debugger;
 import cs.news.util.WebUtils;
 
 public class ScheduleManager extends DataManager {
@@ -47,7 +48,7 @@ public class ScheduleManager extends DataManager {
 				pageNumber++;//next Page
 			}
 		} catch (IOException e) {
-			System.out.println("Error parsing schedule: " + this.scheduleKey);
+			Debugger.showException(e, getClass(), "Error parsing schedule: " + this.scheduleKey, true);
 		}
 	}
 
@@ -67,8 +68,8 @@ public class ScheduleManager extends DataManager {
 				if (hrefLink.contains("Menu_Lesxis_"))
 					return hrefLink;
 			}
-		} catch (IOException e1) {
-			System.out.println("Error getting feeding schedule URL.");
+		} catch (IOException e) {
+			Debugger.showException(e, ScheduleManager.class, "Error getting feeding schedule URL.", true);
 		}
 		return null;
 	}

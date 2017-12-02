@@ -13,6 +13,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import cs.news.datamanagers.AnnounceManager;
+import cs.news.util.Debugger;
 
 public class TrayIcon extends java.awt.TrayIcon {
 	private static final String TRAY_NAME = "CSE News";
@@ -68,7 +69,7 @@ public class TrayIcon extends java.awt.TrayIcon {
 				traySystem.add(this);
 			}
 		} catch (Exception e) {
-			System.out.println("Error adding the tray.");
+			Debugger.showException(e, getClass(), "Error adding tray to system.", false);
 		}
 	}
 

@@ -12,6 +12,7 @@ import org.jsoup.select.Elements;
 
 import cs.news.model.Announce;
 import cs.news.swing.TrayIcon;
+import cs.news.util.Debugger;
 import cs.news.util.Options;
 import cs.news.util.WebUtils;
 
@@ -41,7 +42,7 @@ public class AnnounceManager extends DataManager {
 			if (a.isRead())
 				read.add(a);
 		}
-		System.out.println(read.size() + " Announces have been removed.");
+		Debugger.debug(read.size() + " Announcements have been removed.", getClass());
 		announces.removeAll(read);
 	}
 
@@ -92,13 +93,12 @@ public class AnnounceManager extends DataManager {
 				pageNumber++;//next Page
 			}
 		} catch (IOException e) {
-			System.out.println("Error parsing announcements.");
+			Debugger.showException(e, getClass(), "Error parsing announcements.", true);
 		} finally {
 			removeReadAnnounces();
 			saveData();
 			if (extracts > 0) {
-				TrayIcon.getInstance().showMessage("CS News",
-						extracts + (extracts == 1 ? " νέα ανακοίνωση!" : " νέες ανακοινώσεις!"), true);
+				TrayIcon.getInstance().showMessage("CS News", extracts + (extracts == 1 ? " νέα ανακοίνωση!" : " νέες ανακοινώσεις!"), true);
 			}
 			TrayIcon.getInstance().reBuild();
 		}

@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import cs.news.util.Debugger;
+
 public abstract class DataManager {
 	public static final String HOME_DIRECTORY = System.getenv("APPDATA") + "\\CSE News\\";
 	private String filePath;
@@ -47,6 +49,7 @@ public abstract class DataManager {
 			ois.close();
 		} catch (IOException | ClassNotFoundException e1) {
 			e1.printStackTrace();
+			Debugger.showException(e1, getClass(), false);
 		}
 		return readObject;
 	}
@@ -59,6 +62,7 @@ public abstract class DataManager {
 			oos.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+			Debugger.showException(e, getClass(), false);
 		}
 	}
 

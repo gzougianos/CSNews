@@ -7,8 +7,7 @@ import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 
 public class BatchWriter {
-	private static final String BATCH_LOCATION = System.getenv("APPDATA")
-			+ "\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\";
+	private static final String BATCH_LOCATION = System.getenv("APPDATA") + "\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\";
 	private static final String BATCH_NAME = "runcs.bat";
 	private static final String BATCH_COMMAND = "\"JAR_LOCATION\" /sil";
 
@@ -29,6 +28,7 @@ public class BatchWriter {
 			writer.close();
 		} catch (IOException | URISyntaxException e) {
 			e.printStackTrace();
+			Debugger.showException(e, BatchWriter.class, "Error writing the .bat file.", false);
 		}
 	}
 

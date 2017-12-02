@@ -31,6 +31,7 @@ public class OpenLinkActionListener implements ActionListener {
 			//Runtime.getRuntime().exec(new String[] { "cmd", "/c", ("start chrome " + "\"" + link + "\"") });
 		} catch (IOException | URISyntaxException exc) {
 			exc.printStackTrace();
+			Debugger.showException(exc, OpenLinkActionListener.class, "Can't open " + link, false);
 		}
 	}
 }
