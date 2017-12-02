@@ -7,11 +7,11 @@ public enum Options {
 	MAX_CHARACTERS_ANNOUNCE_MENU_ITEM(70),
 	REMIND_ANNOUNCES_TIME(120),
 	SYNC_ANNOUNCES_TIME(30),
-	OPEN_ANNOUNCEMENTS_IN_PDF(false),
+	OPEN_ANNOUNCEMENTS_IN_PDF(true),
 	ANNOUNCES_MAX_NUMBER(10),
 	INDEX_OF_LAST_TEACHER_VISITED(-1),
 	LAST_TIME_TEACHERS_SYNC(0), //The time of the last synchronize teachers
-	WINDOWS_STARTUP(false); //Run app with windows
+	WINDOWS_STARTUP(true); //Run app with windows
 	//@formatter:on
 	private String key;
 

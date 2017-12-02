@@ -17,7 +17,7 @@ import cs.news.datamanagers.AnnounceManager;
 public class TrayIcon extends java.awt.TrayIcon {
 	private static final String TRAY_NAME = "CSE News";
 
-	public TrayIcon() {
+	private TrayIcon() {
 		super(createImage(""));
 		setImageAutoSize(true);
 		addToSystem();
