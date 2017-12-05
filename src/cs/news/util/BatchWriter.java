@@ -8,7 +8,7 @@ import java.nio.charset.Charset;
 
 public class BatchWriter {
 	private static final String BATCH_LOCATION = System.getenv("APPDATA") + "\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\";
-	private static final String BATCH_NAME = "runcs.bat";
+	private static final String BATCH_NAME = "runCSNews.bat";
 	private static final String BATCH_COMMAND = "\"JAR_LOCATION\" /sil";
 
 	private static void writeBatch() {

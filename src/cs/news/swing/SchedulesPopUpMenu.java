@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import cs.news.datamanagers.ScheduleManager;
 import cs.news.datamanagers.ScheduleManager.Schedule;
+import cs.news.util.Debugger;
 
 public class SchedulesPopUpMenu extends PopupMenu {
 	private static final long serialVersionUID = -8038954148162824287L;
@@ -25,6 +26,7 @@ public class SchedulesPopUpMenu extends PopupMenu {
 						s.open();
 					} catch (IOException e1) {
 						showUnavailableScheduleMsg();
+						Debugger.showException(e1, getClass(), false);
 					}
 				}
 			});
@@ -39,6 +41,7 @@ public class SchedulesPopUpMenu extends PopupMenu {
 					ScheduleManager.openFeedingSchedule();
 				} catch (IOException e) {
 					showUnavailableScheduleMsg();
+					Debugger.showException(e, getClass(), false);
 				}
 			}
 		});

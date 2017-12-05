@@ -64,9 +64,20 @@ public class ScheduleManager extends DataManager {
 			Element mainElement = doc.getElementsByClass("blog-content wf-td").first();
 			Elements hrefs = mainElement.getElementsByAttribute("href");
 			for (Element href : hrefs) {
-				String hrefLink = href.select("a").attr("href");
-				if (hrefLink.contains("Menu_Lesxis_"))
-					return hrefLink;
+				Element actionElement = href.select("a").first();
+				String titleAttr = actionElement.attr("title");
+				String linkAttr = actionElement.attr("href");
+				if (titleAttr.contains("Πρόγραμμα Σίτισης")) {
+					doc = Jsoup.connect(linkAttr).get();
+					mainElement = doc.getElementsByClass("entry-content").first();
+					Elements hrefs2 = mainElement.getElementsByAttribute("href");
+					for (Element href2 : hrefs2) {
+						String linkAttr2 = href2.select("a").first().attr("href");
+						if (linkAttr2.contains("Menu_Lesxis")) {
+							return linkAttr2;
+						}
+					}
+				}
 			}
 		} catch (IOException e) {
 			Debugger.showException(e, ScheduleManager.class, "Error getting feeding schedule URL.", true);
