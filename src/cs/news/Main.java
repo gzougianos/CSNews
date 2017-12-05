@@ -1,6 +1,5 @@
 package cs.news;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,11 +13,11 @@ import cs.news.util.BatchWriter;
 import cs.news.util.Debugger;
 
 public class Main {
-	private static final String SILENT_MODE_ARGUMENT = "sil";
-	private static final String ADMIN_MODE_ARGUMENT = "adm";
+	private static final String SILENT_MODE_ARGUMENT = "/sil";
+	private static final String ADMIN_MODE_ARGUMENT = "/adm";
 	private static List<String> arguments;
 
-	public static void main(String args[]) throws IOException {
+	public static void main(String args[]) {
 		checkOSCompatibility();
 		SetUpUIManager();
 		arguments = Arrays.asList(args);
