@@ -42,7 +42,7 @@ public class AnnounceManager extends DataManager {
 			if (a.isRead())
 				read.add(a);
 		}
-		Debugger.debug(read.size() + " Announcements have been removed.", getClass());
+		//Debugger.debug(read.size() + " Announcements have been removed.", getClass());
 		announces.removeAll(read);
 	}
 
