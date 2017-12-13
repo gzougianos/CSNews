@@ -22,12 +22,12 @@ public class SettingsPanel extends JPanel {
 	private static final Object[] DIALOG_OPTIONS = { "Αποθήκευση", "Ακύρωση" };
 	private static final Dimension PANEL_DIMENSION = new Dimension(265, 225);
 	private static final String PROGRAM_INFO_LINK = "https://github.com/GiorgosZougianos/CSNews";
-	private JSpinner announceSpinner = new JSpinner();
+	private JSpinner announceSpinner = new LimitedValueSpinner(Options.ANNOUNCES_MAX_NUMBER.toInt(), 0, 700);
 	private JCheckBox openInPdfCheckBox = new JCheckBox();
-	private JSpinner syncSpinner = new JSpinner();
-	private JSpinner remindSpinner = new JSpinner();
+	private JSpinner syncSpinner = new LimitedValueSpinner(Options.SYNC_ANNOUNCES_TIME.toInt(), 1, 5000);
+	private JSpinner remindSpinner = new LimitedValueSpinner(Options.REMIND_ANNOUNCES_TIME.toInt(), 1, 5000);
 	private JCheckBox windowsStartupCheckBox;
-	private JSpinner maxCharactersSpinner = new JSpinner();
+	private JSpinner maxCharactersSpinner = new LimitedValueSpinner(Options.MAX_CHARACTERS_ANNOUNCE_MENU_ITEM.toInt(), 40, 200);
 
 	public SettingsPanel() {
 		super();
@@ -54,7 +54,6 @@ public class SettingsPanel extends JPanel {
 		maxAnnouncesTxt.setColumns(10);
 
 		announceSpinner.setBounds(217, 24, 41, 20);
-		announceSpinner.setValue(Options.ANNOUNCES_MAX_NUMBER.toInt());
 		announceSpinner.setToolTipText("<html>Προτιμήστε μικρούς αριθμούς για αποφυγή καθυστέρησης συγχρονισμού." + "<br>Προτεινόμενη Τιμή: 10</html>");
 		add(announceSpinner);
 
@@ -75,7 +74,6 @@ public class SettingsPanel extends JPanel {
 		add(announcementSyncTxt);
 
 		syncSpinner.setBounds(217, 66, 41, 20);
-		syncSpinner.setValue(Options.SYNC_ANNOUNCES_TIME.toInt());
 		syncSpinner.setToolTipText(announcementSyncTxt.getToolTipText());//same tool tip as announcementSyncTxt
 		add(syncSpinner);
 
@@ -89,7 +87,6 @@ public class SettingsPanel extends JPanel {
 		add(announcementRemindTxt);
 
 		remindSpinner.setBounds(217, 87, 41, 20);
-		remindSpinner.setValue(Options.REMIND_ANNOUNCES_TIME.toInt());
 		remindSpinner.setToolTipText(announcementRemindTxt.getToolTipText());//same tool tip as announcementRemindTxt
 		add(remindSpinner);
 
@@ -104,7 +101,6 @@ public class SettingsPanel extends JPanel {
 		maxCharsInAnnounceTxT.setColumns(10);
 
 		maxCharactersSpinner.setBounds(217, 108, 41, 20);
-		maxCharactersSpinner.setValue(Options.MAX_CHARACTERS_ANNOUNCE_MENU_ITEM.toInt());
 		maxCharactersSpinner.setToolTipText(maxCharsInAnnounceTxT.getToolTipText());//same tool tip as maxCharsInAnnounceTxT
 		add(maxCharactersSpinner);
 
