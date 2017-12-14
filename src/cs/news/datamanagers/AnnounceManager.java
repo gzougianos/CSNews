@@ -2,6 +2,7 @@ package cs.news.datamanagers;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
@@ -96,6 +97,7 @@ public class AnnounceManager extends DataManager {
 			Debugger.showException(e, getClass(), "Error parsing announcements.", true);
 		} finally {
 			removeReadAnnounces();
+			Collections.sort(announces); //Sort announces according to their date.
 			saveData();
 			if (extracts > 0) {
 				TrayIcon.getInstance().showMessage("CS News", extracts + (extracts == 1 ? " νέα ανακοίνωση!" : " νέες ανακοινώσεις!"), true);

@@ -1,8 +1,9 @@
 package cs.news.model;
 
 import java.io.Serializable;
+import java.util.Calendar;
 
-public class Announce implements Serializable {
+public class Announce implements Serializable, Comparable<Announce> {
 	private static final long serialVersionUID = -4337075888035939207L;
 	private String date;
 	private String title;
@@ -54,5 +55,20 @@ public class Announce implements Serializable {
 
 	public void print() {
 		System.out.println(this.toString());
+	}
+
+	@Override
+	public int compareTo(Announce announce) {
+		String[] date1 = this.getDate().split(",")[1].trim().split("/");
+		String[] date2 = announce.getDate().split(",")[1].trim().split("/");
+		Calendar c1 = Calendar.getInstance();
+		c1.set(Calendar.DAY_OF_MONTH, Integer.parseInt(date1[0]));
+		c1.set(Calendar.MONTH, Integer.parseInt(date1[1]));
+		c1.set(Calendar.YEAR, Integer.parseInt(date1[2]));
+		Calendar c2 = Calendar.getInstance();
+		c2.set(Calendar.DAY_OF_MONTH, Integer.parseInt(date2[0]));
+		c2.set(Calendar.MONTH, Integer.parseInt(date2[1]));
+		c2.set(Calendar.YEAR, Integer.parseInt(date2[2]));
+		return (int) (c2.getTimeInMillis() - c1.getTimeInMillis());
 	}
 }
