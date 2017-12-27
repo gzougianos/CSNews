@@ -16,7 +16,7 @@ public class WebUtils {
 	public static final String NEWS_LIST_MAINPAGE = "http://cs.uoi.gr/index.php?menu=m5&page=";
 	private static final String CONNECTION_CHECK_URL = "http://google.com";
 
-	public static String FetchPDFLink(int announceId) throws IOException {
+	public static String fetchPDFLinkFromAnnouncement(int announceId) throws IOException {
 		final String announceLink = ANNOUNCEMENT_URL_PREFIX + announceId;
 		Document doc = Jsoup.connect(announceLink).get();
 		Element attached = doc.getElementsByClass("newsMoreAttached").first();
@@ -24,7 +24,7 @@ public class WebUtils {
 		return href.length() > 1 ? "http://cs.uoi.gr" + href : null;//length = 0 when PDF link doesn't exist
 	}
 
-	public static void DownloadPDF(String pdfLink, File file) throws IOException {
+	public static void downloadPDF(String pdfLink, File file) throws IOException {
 		final URL url = new URL(pdfLink);
 		InputStream in = url.openStream();
 		FileOutputStream fos = new FileOutputStream(file);

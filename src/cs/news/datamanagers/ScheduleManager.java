@@ -23,11 +23,6 @@ public class ScheduleManager extends DataManager {
 	}
 
 	@Override
-	public Object getData() {
-		return null;
-	}
-
-	@Override
 	protected final void parseData() {
 		int pageNumber = 1;
 		try {
@@ -40,8 +35,8 @@ public class ScheduleManager extends DataManager {
 					String title = hyperLink.text();
 					if (title.contains(this.scheduleKey)) {
 						int id = Integer.parseInt(hyperLink.attr("href").split("id=")[1]);
-						String pdf = WebUtils.FetchPDFLink(id);
-						WebUtils.DownloadPDF(pdf, getDataFile());
+						String pdf = WebUtils.fetchPDFLinkFromAnnouncement(id);
+						WebUtils.downloadPDF(pdf, getDataFile());
 						break whileloop;
 					}
 				}
@@ -50,11 +45,6 @@ public class ScheduleManager extends DataManager {
 		} catch (IOException e) {
 			Debugger.showException(e, getClass(), "Error parsing schedule: " + this.scheduleKey, true);
 		}
-	}
-
-	@Override
-	protected final boolean parseWebDataCondition() {
-		return true;
 	}
 
 	private static String getFeedingScheduleURL() {
@@ -87,7 +77,7 @@ public class ScheduleManager extends DataManager {
 
 	public static void openFeedingSchedule() throws IOException {
 		File f = new File(DataManager.HOME_DIRECTORY + "//lesxi.pdf");
-		WebUtils.DownloadPDF(getFeedingScheduleURL(), f);//Sync schedule before open
+		WebUtils.downloadPDF(getFeedingScheduleURL(), f);//Sync schedule before open
 		if (f.exists())
 			Desktop.getDesktop().open(f);
 		else
@@ -120,4 +110,13 @@ public class ScheduleManager extends DataManager {
 		}
 	}
 
+	@Override
+	protected final boolean parseWebDataCondition() {
+		return true;
+	}
+
+	@Override
+	public Object getData() {
+		return null;
+	}
 }

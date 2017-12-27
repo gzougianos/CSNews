@@ -77,7 +77,7 @@ public class AnnounceManager extends DataManager {
 					String date = div.select("h3").first().text().split(" - ")[0];
 					String title = hyperLink.text();
 					int id = Integer.parseInt(hyperLink.attr("href").split("id=")[1]);
-					String pdf = WebUtils.FetchPDFLink(id);
+					String pdf = WebUtils.fetchPDFLinkFromAnnouncement(id);
 					Announce a = new Announce(date, title, id, false, color, pdf);
 					announcesRead++;
 					if (announcesRead > Options.ANNOUNCES_MAX_NUMBER.toInt())
