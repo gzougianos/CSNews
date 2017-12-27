@@ -20,7 +20,7 @@ import cs.news.util.Options;
 public class SettingsPanel extends JPanel {
 	private static final long serialVersionUID = 6429776879534491034L;
 	private static final Object[] DIALOG_OPTIONS = { "Αποθήκευση", "Ακύρωση" };
-	private static final Dimension PANEL_DIMENSION = new Dimension(265, 225);
+	private static final Dimension PANEL_DIMENSION = new Dimension(265, 250);
 	private static final String PROGRAM_INFO_LINK = "https://github.com/GiorgosZougianos/CSNews";
 	private JSpinner announceSpinner = new LimitedValueSpinner(Options.ANNOUNCES_MAX_NUMBER.toInt(), 0, 700);
 	private JCheckBox openInPdfCheckBox = new JCheckBox();
@@ -28,6 +28,7 @@ public class SettingsPanel extends JPanel {
 	private JSpinner remindSpinner = new LimitedValueSpinner(Options.REMIND_ANNOUNCES_TIME.toInt(), 1, 5000);
 	private JCheckBox windowsStartupCheckBox;
 	private JSpinner maxCharactersSpinner = new LimitedValueSpinner(Options.MAX_CHARACTERS_ANNOUNCE_MENU_ITEM.toInt(), 40, 200);
+	private JCheckBox enableManualSync;
 
 	public SettingsPanel() {
 		super();
@@ -115,14 +116,21 @@ public class SettingsPanel extends JPanel {
 
 		windowsStartupCheckBox = new JCheckBox("Αυτόματη εκκίνηση με τα Windows.");
 		windowsStartupCheckBox.setSelected(Options.WINDOWS_STARTUP.toBoolean());
-		windowsStartupCheckBox.setBounds(6, 164, 201, 23);
+		windowsStartupCheckBox.setBounds(6, 164, 252, 23);
 		add(windowsStartupCheckBox);
 
 		JButton programInfoButton = new JButton("Πληροφορίες σχετικά με το Πρόγραμμα");
 		programInfoButton.addActionListener(new OpenLinkActionListener(PROGRAM_INFO_LINK));
 		programInfoButton.setFont(new Font(programInfoButton.getFont().getFontName(), 0, 9));
-		programInfoButton.setBounds(31, 194, 201, 23);
+		programInfoButton.setBounds(30, 216, 201, 23);
 		add(programInfoButton);
+
+		enableManualSync = new JCheckBox("Μενού για Χειροκίνητο Συγχρονισμό");
+		enableManualSync.setSelected(Options.MANUAL_SYNC_MENU.toBoolean());
+		enableManualSync.setToolTipText(
+				"<html>Αυτή η επιλογή θα ενεργοποιήσει το μενού (κουμπί) για χεροκίνητο συγχρονισμό ανακοινώσεων.<br>Έπειτα από έναν χειροκίνητο συγχρονισμό ο επόμενος αυτόματος συγχρονισμός θα γίνει μετά απο την επιλεγμένη περίοδο αυτόματου συγχρονισμού.");
+		enableManualSync.setBounds(6, 186, 252, 23);
+		add(enableManualSync);
 	}
 
 	public static void open() {
@@ -137,11 +145,16 @@ public class SettingsPanel extends JPanel {
 			somethingChanged |= Options.REMIND_ANNOUNCES_TIME.update(panel.getOptionRemindAnnouncesTime());
 			somethingChanged |= Options.WINDOWS_STARTUP.update(panel.getOptionWindowsStartUp());
 			somethingChanged |= Options.MAX_CHARACTERS_ANNOUNCE_MENU_ITEM.update(panel.getOptionMaxCharsInAnnouncements());
+			somethingChanged |= Options.MANUAL_SYNC_MENU.update(panel.getManualSync());
 			if (somethingChanged) {
 				Timer.restart();
 				BatchWriter.handleState();
 			}
 		}
+	}
+
+	private boolean getManualSync() {
+		return enableManualSync.isSelected();
 	}
 
 	private int getOptionMaxAnnouncements() {

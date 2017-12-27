@@ -6,6 +6,7 @@ import java.awt.PopupMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import cs.news.Timer;
 import cs.news.datamanagers.AnnounceManager;
 import cs.news.model.Announce;
 import cs.news.util.OpenLinkActionListener;
@@ -63,12 +64,22 @@ public class TrayPopUp extends PopupMenu {
 				SettingsPanel.open();
 			}
 		});
+		MenuItem forceSync = new MenuItem("Χειροκίνητος Συγχρονισμός Ανακοινώσεων");
+		forceSync.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Timer.restart();
+			}
+		});
 		add(new LinksPopUpMenu());
 		add(new TeachersPopUpMenu());
 		addSeparator();
 		add(new SchedulesPopUpMenu());
 		addSeparator();
 		add(announcesMenu);
+		if (Options.MANUAL_SYNC_MENU.toBoolean())
+			add(forceSync);
 		add(markAllAsReadMenu);
 		addSeparator();
 		add(settingsMenu);

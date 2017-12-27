@@ -27,7 +27,6 @@ public class TrayIcon extends java.awt.TrayIcon {
 
 	public void reBuild() {
 		setPopupMenu(new TrayPopUp());
-		showSyncImage();
 		if (!AvailableInternetConnection()) {
 			setToolTip("Δεν υπάρχει σύνδεση στο Internet.");
 			setImage(createImage("--"));
@@ -38,9 +37,9 @@ public class TrayIcon extends java.awt.TrayIcon {
 		}
 	}
 
-	public void showSyncImage() {
+	public void showSyncImage(String msg) {
 		setImage(createImage("*"));
-		setToolTip("Συγχρονισμός Ανακοινώσεων...");
+		setToolTip(msg);
 	}
 
 	private static Image createImage(String writtenText) {

@@ -62,7 +62,7 @@ public class AnnounceManager extends DataManager {
 
 	@Override
 	protected void parseData() {
-		TrayIcon.getInstance().showSyncImage();
+		TrayIcon.getInstance().showSyncImage("Συγχρονισμός ανακοινώσεων...");
 		int pageNumber = 1;
 		int extracts = 0;
 		int announcesRead = 0;
